@@ -1,9 +1,15 @@
 CC = c++ 
-NAME = btc
-SRC = 
-HEADER = 
+NAME = IRC
+SRC =	src/main.cpp	\
+		src/Client.cpp \
+		src/Server.cpp
+HEADER =	inc/IRC.hpp \
+			inc/Client.hpp \
+			inc/Server.hpp
+
 OBJ=$(SRC:.cpp=.o)
 CFLAGS = -Werror -Wall -Wextra -g3 -std=c++98
+INC = -I inc/
 
 GREEN=\033[0;92m
 YELLOW=\033[0;33m
@@ -12,11 +18,11 @@ END=\033[0m
 
 all : $(NAME) _capy
 
-%.o : %.cpp $(HEADER)
-	$(CC) $(CFLAGS) -c $< -o $@
+%.o : %.cpp $(HEADER) 
+	$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
 $(NAME) : $(OBJ)
-	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+	$(CC) $(CFLAGS) $(INC) $(OBJ) -o $(NAME)
 
 re : fclean all
 
