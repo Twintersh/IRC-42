@@ -30,7 +30,7 @@ clean :
 	rm -rf $(OBJ)
 
 run : all
-	clear && ./$(NAME) $(ARG)
+	clear && ./$(NAME) 2000 oui
 
 fclean : clean
 	@rm -rf $(NAME)

@@ -1,8 +1,9 @@
 #ifndef SERVER_HPP
 # define SERVER_HPP
 
-#include "Client.hpp"
 #include "IRC.hpp"
+
+class Client;
 
 class Server
 {
@@ -18,8 +19,9 @@ class Server
 	private:
 		bool	addPoll(int fd);
 		void	newClient(void);
+		void	killClient(struct epoll_event &curEv);
 		void	readStdin(void);
-		void	parseRequest(int fd);
+		void	parseRequest(struct epoll_event &curEv);
 
 		Server( void );
 

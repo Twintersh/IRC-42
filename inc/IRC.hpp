@@ -26,5 +26,7 @@
 #include <sys/epoll.h>
 
 //--------------------Headers-----------------
+#include "Server.hpp"
+#include "Client.hpp"
 
 #endif

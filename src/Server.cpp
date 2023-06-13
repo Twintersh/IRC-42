@@ -2,12 +2,43 @@
 
 //main functions
 
+void	Server::parseRequest(struct epoll_event &curEv)
+{
+	char *buf = new char[255];
+	int	buflen;
+
+	buflen = recv(curEv.data.fd, buf, 255, 0);
+	if (buflen == 0)
+		killClient(curEv);
+	else
+	{
+		std::cout << buf << std::endl;
+		delete buf;
+	}
+}
+
+void Server::killClient(struct epoll_event &curEv)
+{
+	epoll_ctl(this->_epfd, EPOLL_CTL_DEL, curEv.data.fd, &curEv);
+	for (std::vector<Client>::iterator it = this->_clients.begin() ; it != this->_clients.end() ; it++)
+	{
+		if (it->getFd() == curEv.data.fd)
+		{
+			_clients.erase(it);
+			break;
+		}
+	}
+	close(curEv.data.fd);
+	std::cout << "Closed connection with client" << std::endl;
+}
+
 void	Server::readStdin(void)
 {
 	std::string stdin_content;
 
+	std::cout << "reading stdin" << std::endl;
 	getline(std::cin, stdin_content);
-	if (stdin_content == "exit") 
+	if (stdin_content == "exit")
 		exit(0);
 }
 
@@ -20,10 +51,12 @@ void	Server::newClient(void)
 	fd = accept(this->_fd, (struct sockaddr *)&cAddr, &addrLen);
 	if (fd == -1)
 		throw std::range_error("could not establish new connection with client");
+	std::cout << "New connection established, adding client to poll" << std::endl;
 	if (!addPoll(fd))
 		throw std::range_error("could not create new client");
 	Client	newC(fd);
 	this->_clients.push_back(newC);
+	std::cout << "Client added to client list" << std::endl;
 }
 
 bool	Server::addPoll(int fd)
@@ -35,24 +68,28 @@ bool	Server::addPoll(int fd)
 		perror("epoll add");
 		return (false);
 	}
+	std::cout << "Added fd to epoll list" << std::endl;
 	return (true);
 }
 
 void	Server::startServer( void )
 {
+	std::cout << "Server started" << std::endl;
 	struct epoll_event	eventList[MAX_EVENTS];
 
-// waiting for request...
+	// waiting for request...
 	bind(this->_fd, (struct sockaddr *)&this->_addr, sizeof(this->_addr));
 	listen(this->_fd, 5);
-
-// add server socket for new connection and stdin for exit
+	std::cout << "Server is waiting for request" << std::endl;
+	
+	// add server socket for new connection and stdin for exit
 	if (!addPoll(this->_fd) || !addPoll(STDIN_FILENO))
 		throw std::range_error("Could not create new poll");
 
-// main loop
+	// main loop
 	while (true)
 	{
+		std::cout << "epoll_wait is waiting" << std::endl;
 		int nbEv = epoll_wait(this->_epfd, eventList, MAX_EVENTS, -1);
 
 		for(int i = 0 ; i < nbEv ; i++)
@@ -62,7 +99,7 @@ void	Server::startServer( void )
 			else if (eventList[i].data.fd == this->_fd)
 				newClient();
 			else
-				parseRequest(eventList[i].data.fd);
+				parseRequest(eventList[i]);
 		}
 	}
 }
@@ -86,7 +123,7 @@ Server::Server(const int port, const std::string password) : _password(password)
 	return ;
 }
 
-Server::Server(Server const &copy)
+Server::Server(Server const &copy) : _password(copy._password)
 {
 	*this = copy;
 }
@@ -95,6 +132,13 @@ Server  &Server::operator=(Server const &rhs)
 {
 	if (this == &rhs)
 		return (*this);
+	this->_addr = rhs._addr;
+	this->_addrLen = rhs._addrLen;
+	this->_clients = std::vector<Client>(rhs._clients);
+	this->_ev = rhs._ev;
+	this->_fd = rhs._fd;
+	this->_epfd = rhs._epfd;
+	return *this;
 }
 
 Server::~Server(void)

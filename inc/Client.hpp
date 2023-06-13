@@ -2,7 +2,6 @@
 # define CLIENT_HPP
 
 #include "IRC.hpp"
-#include "Server.hpp"
 
 class Client
 {
