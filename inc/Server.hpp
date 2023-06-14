@@ -20,6 +20,7 @@ class Server
 		bool	addPoll(int fd);
 		void	newClient(void);
 		void	killClient(struct epoll_event &curEv);
+		std::vector<Client>::iterator	findClientFd(int fd);
 		void	readStdin(void);
 		void	parseRequest(struct epoll_event &curEv);
 

@@ -1,33 +1,50 @@
 #include "Server.hpp"
 
+//Server utils
+
+bool	Server::addPoll(int fd)
+{
+	this->_ev.events = EPOLLIN;
+	this->_ev.data.fd = fd;
+	if (epoll_ctl(this->_epfd, EPOLL_CTL_ADD, fd, &this->_ev) == -1)
+		return (false);
+	return (true);
+}
+
+std::vector<Client>::iterator	Server::findClientFd(int fd)
+{
+	for(std::vector<Client>::iterator it = this->_clients.begin();it != this->_clients.end();it++)
+		if (it->getFd() == fd)
+			return it;
+}
+//parsing functions
+
+
 //main functions
 
 void	Server::parseRequest(struct epoll_event &curEv)
 {
-	char *buf = new char[255];
-	int	buflen;
+	char *buf = new char[BUFLEN];
+	std::string	sBuf;
+	int	bytes;
 
-	buflen = recv(curEv.data.fd, buf, 255, 0);
-	if (buflen == 0)
+	bytes = recv(curEv.data.fd, buf, BUFLEN, 0);
+	sBuf = buf;
+	if (bytes == 0)
 		killClient(curEv);
-	else
+	else if (bytes > BUFLEN)
 	{
-		std::cout << buf << std::endl;
-		delete buf;
+
 	}
+	else
+		parseMsg(curEv.data.fd, sBuf);
+	delete buf;
 }
 
 void Server::killClient(struct epoll_event &curEv)
 {
 	epoll_ctl(this->_epfd, EPOLL_CTL_DEL, curEv.data.fd, &curEv);
-	for (std::vector<Client>::iterator it = this->_clients.begin() ; it != this->_clients.end() ; it++)
-	{
-		if (it->getFd() == curEv.data.fd)
-		{
-			_clients.erase(it);
-			break;
-		}
-	}
+	this->_clients.erase(findClientFd(curEv.data.fd));
 	close(curEv.data.fd);
 	std::cout << "Closed connection with client" << std::endl;
 }
@@ -59,18 +76,6 @@ void	Server::newClient(void)
 	std::cout << "Client added to client list" << std::endl;
 }
 
-bool	Server::addPoll(int fd)
-{
-	this->_ev.events = EPOLLIN;
-	this->_ev.data.fd = fd;
-	if (epoll_ctl(this->_epfd, EPOLL_CTL_ADD, fd, &this->_ev) == -1)
-	{
-		perror("epoll add");
-		return (false);
-	}
-	std::cout << "Added fd to epoll list" << std::endl;
-	return (true);
-}
 
 void	Server::startServer( void )
 {
@@ -89,7 +94,6 @@ void	Server::startServer( void )
 	// main loop
 	while (true)
 	{
-		std::cout << "epoll_wait is waiting" << std::endl;
 		int nbEv = epoll_wait(this->_epfd, eventList, MAX_EVENTS, -1);
 
 		for(int i = 0 ; i < nbEv ; i++)

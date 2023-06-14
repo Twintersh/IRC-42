@@ -3,7 +3,8 @@
 
 //--------------------Defines-----------------
 
-#define MAX_EVENTS 1024
+#define MAX_EVENTS	1024
+#define BUFLEN	1024
 
 //--------------------Libraries-----------------
 #include <iostream>

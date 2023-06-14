@@ -12,7 +12,7 @@ class Client
 		Client(void);
 	public :
 		struct sockaddr_in	getAddr(void) const;
-		int		getFd(void) const;
+		int	getFd(void) const;
 		void	setFd(int fd);
 
 		Client(int fd);

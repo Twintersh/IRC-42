@@ -2,20 +2,11 @@
 
 //Setter / getter
 
-void	Client::setFd(int fd)
-{
-	this->_fd = fd;
-}
+void	Client::setFd(int fd) {this->_fd = fd;}
 
-int	Client::getFd(void) const
-{
-	return (this->_fd);
-}
+int	Client::getFd(void) const{return (this->_fd);}
 
-struct sockaddr_in	Client::getAddr(void) const
-{
-	return this->_addr;
-}
+struct sockaddr_in	Client::getAddr(void) const {return this->_addr;}
 
 // constructors / destructors
 
