@@ -16,7 +16,7 @@ IRC c++ project
 
 - [ ] Channel properties :
 	- [ ] TOPIC
-	- [ ] OPERATORS RESTRICTIONS
+	- [ ] OPERATORS TOPIC RESTRICTIONS
 	- [ ] USER LIMIT
 	- [ ] INVITE-ONLY MODE
 	- [ ] PASSWORD

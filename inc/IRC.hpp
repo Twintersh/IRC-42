@@ -4,7 +4,7 @@
 //--------------------Defines-----------------
 
 #define MAX_EVENTS	1024
-#define BUFLEN	1024
+#define MAX_BUF	500
 
 //--------------------Libraries-----------------
 #include <iostream>
@@ -23,11 +23,13 @@
 #include <netdb.h>
 #include <poll.h>
 #include <time.h>
+#include <fcntl.h>
 #include <netinet/in.h>
 #include <sys/epoll.h>
 
 //--------------------Headers-----------------
 #include "Server.hpp"
 #include "Client.hpp"
+#include "Channel.hpp"
 
 #endif

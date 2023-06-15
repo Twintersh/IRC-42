@@ -8,6 +8,8 @@ class Client
 	private :
 		struct	sockaddr_in	_addr;
 		int		_fd;
+		std::string	_nick;
+		std::string	_user;
 
 		Client(void);
 	public :

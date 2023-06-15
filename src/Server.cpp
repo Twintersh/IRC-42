@@ -4,6 +4,9 @@
 
 bool	Server::addPoll(int fd)
 {
+	int flags = fcntl(fd, F_GETFL, 0);
+
+	fcntl(fd, F_SETFL, flags | O_NONBLOCK);
 	this->_ev.events = EPOLLIN;
 	this->_ev.data.fd = fd;
 	if (epoll_ctl(this->_epfd, EPOLL_CTL_ADD, fd, &this->_ev) == -1)
@@ -16,29 +19,29 @@ std::vector<Client>::iterator	Server::findClientFd(int fd)
 	for(std::vector<Client>::iterator it = this->_clients.begin();it != this->_clients.end();it++)
 		if (it->getFd() == fd)
 			return it;
+	return this->_clients.end();
 }
 //parsing functions
-
 
 //main functions
 
 void	Server::parseRequest(struct epoll_event &curEv)
 {
-	char *buf = new char[BUFLEN];
+	char buf[6000];
 	std::string	sBuf;
 	int	bytes;
 
-	bytes = recv(curEv.data.fd, buf, BUFLEN, 0);
+	bytes = recv(curEv.data.fd, buf, sizeof(buf), 0);
 	sBuf = buf;
 	if (bytes == 0)
 		killClient(curEv);
-	else if (bytes > BUFLEN)
+	else if (bytes >= MAX_BUF)
 	{
-
+		sBuf = "Server : Message too long !\n";
+		send(curEv.data.fd, sBuf.c_str(), sBuf.length(), 0);
 	}
-	else
-		parseMsg(curEv.data.fd, sBuf);
-	delete buf;
+	// else
+	// 	parseMsg(curEv.data.fd, sBuf);
 }
 
 void Server::killClient(struct epoll_event &curEv)
