@@ -4,8 +4,8 @@ SRC =	src/main.cpp	\
 		src/Channel.cpp	\
 		src/Client.cpp \
 		src/Server.cpp	\
-		src/Parsing.cpp	\
-		src/Commands.cpp
+		src/parsing.cpp	\
+		src/commands.cpp
 HEADER =	inc/IRC.hpp \
 			inc/Client.hpp \
 			inc/Server.hpp	\
