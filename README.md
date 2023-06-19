@@ -24,8 +24,7 @@ IRC c++ project
 
 - [ ] Client commands :
 	- [ ] PASS
-	- [ ] NIQUE
-	- [ ] BZEZ
+	- [ ] NICK
 	- [ ] USER
 	- [ ] JOIN
 	- [ ] PART

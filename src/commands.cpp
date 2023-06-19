@@ -66,7 +66,7 @@ void	Server::join(std::istringstream &content, int fd)
 		clientError(this->_clients[fd]->getFd(), ERR_JOIN);
 		return ;
 	}
-	if (std::find(this->_channels.begin(), this->_channels.end(), chName) == this->_channels.end())
+	if (this->_channels.find(chName) == this->_channels.end())
 	{
 		if (content.gcount() > 0)
 		{

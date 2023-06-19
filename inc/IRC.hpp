@@ -44,7 +44,7 @@ enum status{
 
 //--------------------Error Messages-----------------
 #define ERR_LOGIN		"You must enter the password first, fdp"
-#define ERR_BAD_PASS	"Bad password"
+#define ERR_BAD_PASS	"Wrong password"
 #define ERR_ALRDY_LOG	"You already are connected"
 #define ERR_ALRDY_REGIS	"You already are registered"
 #define ERR_REGIS		"Register yourself with the USER cmd"
@@ -52,7 +52,7 @@ enum status{
 #define ERR_JOIN 		"Wrong usage of JOIN, try `JOIN <channelName>`"
 #define ERR_REQ_PASS	"This channel require a password to join, try JOIN <channelName> <password>"
 #define ERR_CH_FULL		"This channel is full, try again later"
-#define ERR_WRNG_PASS	"Wrong password. Try again"
+#define ERR_WRNG_PASS	"Wrong channel password. Try again"
 #define ERR_PASS 		"Wrong usage of PASS, try `PASS <password>`"
 #define ERR_PART 		"Wrong usage of PART, try `PART <channelName>`"
 #define ERR_USER		"Wrong usage of USER, try `USER <nickname> <username>`"
