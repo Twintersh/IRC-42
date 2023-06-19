@@ -1,11 +1,15 @@
 CC = c++ 
 NAME = IRC
 SRC =	src/main.cpp	\
+		src/Channel.cpp	\
 		src/Client.cpp \
-		src/Server.cpp
+		src/Server.cpp	\
+		src/Parsing.cpp	\
+		src/Commands.cpp
 HEADER =	inc/IRC.hpp \
 			inc/Client.hpp \
-			inc/Server.hpp
+			inc/Server.hpp	\
+			inc/Channel.hpp
 
 OBJ=$(SRC:.cpp=.o)
 CFLAGS = -Werror -Wall -Wextra -g3 -std=c++98
@@ -29,8 +33,8 @@ re : fclean all
 clean :
 	rm -rf $(OBJ)
 
-run : all
-	clear && ./$(NAME) 2000 oui
+run : all _capy
+	./$(NAME) 2000 oui
 
 fclean : clean
 	@rm -rf $(NAME)
@@ -38,6 +42,7 @@ fclean : clean
 .PHONY : clean re fclean all
 
 _capy :
+	clear
 	@echo	"$(GREEN)⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ "
 	@echo	" ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣶⠛⢻⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣤⡀⠀⠀⠀⠀⠀$(YELLOW)⠀⠀⠀⠀⠀⢀⣀⣀⣀⣀⡀⠀⠀⠀⠀$(GREEN)⠀⠀⠀"
 	@echo	"⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢻⣄⣼⡦⠴⠒⠒⠶⣤⣀⠀⣾⢧⡋⡇⠀⠀⠀⠀⠀$(YELLOW) ⠀⠀⡤⣚⡍⠀⠀⠀⠀⢩⣓⢤⠀⠀$(GREEN)⠀⠀⠀"

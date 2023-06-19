@@ -1,6 +1,29 @@
 #include "Server.hpp"
 
-//Server utils
+
+// server utils
+void	Server::clientError(int fd, std::string err)
+{
+	std::string	msg;
+
+	msg = "[Server] ";
+	msg += err;
+	msg += "\n";
+	send(fd, msg.c_str(), msg.size(), 0);
+}
+
+void	Server::log(Client client, std::string msgLog)
+{
+	time_t	timer = time(0);
+	tm	*stime = localtime(&timer);
+	char	buf[80];
+	
+	strftime(buf, sizeof(buf), "[%x %X]", stime);
+	if (client.getFd() == -2)
+		std::cout << buf << " " << msgLog << std::endl;
+	else
+		std::cout << buf << " Client " << client.getFd() << " : " << msgLog << std::endl;
+}
 
 bool	Server::addPoll(int fd)
 {
@@ -14,49 +37,38 @@ bool	Server::addPoll(int fd)
 	return (true);
 }
 
-std::vector<Client>::iterator	Server::findClientFd(int fd)
-{
-	for(std::vector<Client>::iterator it = this->_clients.begin();it != this->_clients.end();it++)
-		if (it->getFd() == fd)
-			return it;
-	return this->_clients.end();
-}
-//parsing functions
-
 //main functions
 
 void	Server::parseRequest(struct epoll_event &curEv)
 {
 	char buf[6000];
-	std::string	sBuf;
 	int	bytes;
 
 	bytes = recv(curEv.data.fd, buf, sizeof(buf), 0);
-	sBuf = buf;
+	std::string str(buf);
+	std::istringstream strm(str);
 	if (bytes == 0)
 		killClient(curEv);
 	else if (bytes >= MAX_BUF)
-	{
-		sBuf = "Server : Message too long !\n";
-		send(curEv.data.fd, sBuf.c_str(), sBuf.length(), 0);
-	}
-	// else
-	// 	parseMsg(curEv.data.fd, sBuf);
+		clientError(curEv.data.fd, ERR_MSG_LENGTH);
+	else
+		parseMsg(curEv.data.fd, strm);
+	memset(buf, 0, sizeof(buf));
 }
 
 void Server::killClient(struct epoll_event &curEv)
 {
-	epoll_ctl(this->_epfd, EPOLL_CTL_DEL, curEv.data.fd, &curEv);
-	this->_clients.erase(findClientFd(curEv.data.fd));
 	close(curEv.data.fd);
-	std::cout << "Closed connection with client" << std::endl;
+	epoll_ctl(this->_epfd, EPOLL_CTL_DEL, curEv.data.fd, &curEv);
+	log(curEv.data.fd, LOG_CLOSED);
+	this->_clients.erase(curEv.data.fd);
 }
+
 
 void	Server::readStdin(void)
 {
 	std::string stdin_content;
 
-	std::cout << "reading stdin" << std::endl;
 	getline(std::cin, stdin_content);
 	if (stdin_content == "exit")
 		exit(0);
@@ -70,25 +82,22 @@ void	Server::newClient(void)
 
 	fd = accept(this->_fd, (struct sockaddr *)&cAddr, &addrLen);
 	if (fd == -1)
-		throw std::range_error("could not establish new connection with client");
-	std::cout << "New connection established, adding client to poll" << std::endl;
+		throw std::range_error("accept");
+	log(Client(fd), LOG_NEW_CLIENT);
 	if (!addPoll(fd))
-		throw std::range_error("could not create new client");
-	Client	newC(fd);
-	this->_clients.push_back(newC);
-	std::cout << "Client added to client list" << std::endl;
+		throw std::range_error("addPoll");
+	this->_clients.insert(std::pair<int, Client *>(fd, new Client(fd)));
 }
 
 
 void	Server::startServer( void )
 {
-	std::cout << "Server started" << std::endl;
+	log(Client(-2), LOG_START);
 	struct epoll_event	eventList[MAX_EVENTS];
 
 	// waiting for request...
 	bind(this->_fd, (struct sockaddr *)&this->_addr, sizeof(this->_addr));
 	listen(this->_fd, 5);
-	std::cout << "Server is waiting for request" << std::endl;
 	
 	// add server socket for new connection and stdin for exit
 	if (!addPoll(this->_fd) || !addPoll(STDIN_FILENO))
@@ -141,7 +150,7 @@ Server  &Server::operator=(Server const &rhs)
 		return (*this);
 	this->_addr = rhs._addr;
 	this->_addrLen = rhs._addrLen;
-	this->_clients = std::vector<Client>(rhs._clients);
+	this->_clients = std::map<int, Client *>(rhs._clients);
 	this->_ev = rhs._ev;
 	this->_fd = rhs._fd;
 	this->_epfd = rhs._epfd;

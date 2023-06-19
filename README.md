@@ -23,7 +23,12 @@ IRC c++ project
 	- [ ] CLIENT / OPERATORS LIST
 
 - [ ] Client commands :
+	- [ ] PASS
+	- [ ] NIQUE
+	- [ ] BZEZ
+	- [ ] USER
 	- [ ] JOIN
+	- [ ] PART
 	- [ ] PRVMSG
 
 - [ ] Channel operator commands :
