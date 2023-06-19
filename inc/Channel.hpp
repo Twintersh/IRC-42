@@ -39,6 +39,7 @@ class Channel
 
 		void		joinChannel(Client *newClient);
 		void		leaveChannel(int fd);
+		void		sendChannel(std::string &msg, int fd);
 
 
 		Channel(const std::string &name, Client *op);

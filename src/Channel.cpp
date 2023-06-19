@@ -29,6 +29,16 @@ bool		Channel::isOp(int fd)
 	return true;
 }
 
+void Channel::sendChannel(std::string &msg, int fd)
+{
+	for (vIt_Client it = _members.begin() ; it != _members.end() ; it++) 
+	{
+		if (it->first != fd)
+			send(it->first, msg.c_str(), msg.length(), 0);
+	}
+}
+
+
 //Getters / Setters
 
 
@@ -70,6 +80,7 @@ Channel::Channel( const std::string &name, Client *op): _inviteOnly(false),
 _topicRights(false), _userLimit(0),_name(name), _topic(), _password()
 {
 	this->_operators.insert(std::pair<int, Client *>(op->getFd(), op));
+	this->_members.insert(std::pair<int, Client *>(op->getFd(), op));
 	return ;
 }
 

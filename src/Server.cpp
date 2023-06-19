@@ -1,6 +1,5 @@
 #include "Server.hpp"
 
-
 // server utils
 void	Server::clientLog(int fd, std::string str)
 {
@@ -10,6 +9,16 @@ void	Server::clientLog(int fd, std::string str)
 	msg += str;
 	msg += "\n";
 	send(fd, msg.c_str(), msg.size(), 0);
+}
+
+int	Server::findFdByClientNick(std::string &name)
+{
+	for (vIt_Client it = this->_clients.begin() ; it != this->_clients.end() ; it++)
+	{
+		if (it->second->getNick() == name)
+			return (it->first);
+	}
+	return (-1);
 }
 
 void	Server::log(Client client, std::string msgLog)

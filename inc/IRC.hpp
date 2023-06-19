@@ -28,8 +28,8 @@ class Client;
 class Channel;
 class Server;
 
-typedef std::map<int, Client>::iterator vIt_Client;
-typedef std::vector<Channel>::iterator vIt_Channel;
+typedef std::map<int, Client *>::iterator vIt_Client;
+typedef std::map<std::string, Channel *>::iterator vIt_Channel;
 
 enum status{
 	pendingPassword,
@@ -58,8 +58,12 @@ enum status{
 #define ERR_NOT_MEMBER	"You are not member of this channel"
 #define ERR_OP_LEAVER	"You are operator in this channel, try revoke your rights before leaving"
 #define ERR_UNKWN_CH	"Could not find channel "
+#define ERR_PRIVMSG		"Wrong usage of PRIVMSG, try `PRIVMSG <destination> <message>`"
 #define ERR_USER		"Wrong usage of USER, try `USER <nickname> <username>`"
 #define ERR_MSG_LENGTH	"Your message should not exceed 500 characters"
+#define ERR_USR_NOT_FND "Dest user not found"
+#define ERR_CHN_NOT_FND "Dest channel not found"
+#define ERR_NOT_MEM		"You are not member of this channel"
 
 //-------------------- Client Log Messages -----------------
 #define CLOG_PASS		"Password accepted"
@@ -76,6 +80,8 @@ enum status{
 #define LOG_CLOSED		"left the server"
 #define LOG_START		"Server started"
 #define	LOG_NEW_CLIENT	"connected"
+#define LOG_MSG_CLIENT	"sent message to client"
+#define LOG_MSG_CHANNEL	"sent message to channel"
 
 //--------------------Defines-----------------
 

@@ -31,13 +31,16 @@ class Server
 		//commands
 		void			join(std::istringstream &content, int fd);
 		void			pass(std::istringstream &content, int fd);
-		// void 			prvmsg(std::istringstream &content, Client current);
+		void 			privmsg(std::istringstream &content, int fd);
 		void			part(std::istringstream &content, int fd);
 		void 			user(std::istringstream &content, int fd);
 
 		//utils
 		void			log(Client client, std::string msgLog);
 		void			clientLog(int fd, std::string str);
+
+		//utils
+		int				findFdByClientNick(std::string &name);
 		bool			addPoll(int fd);
 
 		Server(void);

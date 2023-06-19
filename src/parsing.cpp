@@ -7,7 +7,7 @@ void	Server::parseMsg(int fd, std::istringstream &msg)
 	int i;
 
 	msg >> command;
-	for (i = 0 ; i < 5 ; i++)
+	for (i = 0 ; i < 6 ; i++)
 	{
 		if (command == messages[i])
 			break;
@@ -29,11 +29,11 @@ void	Server::parseMsg(int fd, std::istringstream &msg)
 			Server::user(msg, fd);
 			break;
 		// case (2):
-		// 	// Server::nick(msg, findClientByFd(fd));
+		// 	Server::nick(msg, findClientByFd(fd));
 		// 	break;
-		// case (3)
-		// 	// Server::prvmsg(msg, findClientByFd(fd));
-		// 	break;
+		case (3):
+			Server::privmsg(msg, fd);
+			break;
 		case (4):
 			Server::join(msg, fd);
 			break;
