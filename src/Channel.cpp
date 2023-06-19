@@ -8,7 +8,29 @@ void	Channel::joinChannel(Client *newClient)
 	this->_members.insert(std::pair<int, Client *>(newClient->getFd(), newClient));
 	return ;
 }
+
+void	Channel::leaveChannel(int fd)
+{
+	this->_members.erase(fd);
+	return ;
+}
+
+bool		Channel::isMember(int fd)
+{
+	if (this->_members.find(fd) == this->_members.end())
+		return false;
+	return true;
+}
+
+bool		Channel::isOp(int fd)
+{
+	if (this->_operators.find(fd) == this->_operators.end())
+		return false;
+	return true;
+}
+
 //Getters / Setters
+
 
 bool		Channel::getInviteMode(void) const {return this->_inviteOnly;}
 

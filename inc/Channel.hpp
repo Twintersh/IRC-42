@@ -34,10 +34,11 @@ class Channel
 		void		setPassword(std::string password);
 		void		setTopic(std::string topic);
 
-		bool		isOp(const Client &check);
-		bool		isMember(const Client &check);
+		bool		isOp(int fd);
+		bool		isMember(int fd);
 
 		void		joinChannel(Client *newClient);
+		void		leaveChannel(int fd);
 
 
 		Channel(const std::string &name, Client *op);

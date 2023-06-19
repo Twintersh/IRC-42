@@ -3,7 +3,7 @@
 void	Server::parseMsg(int fd, std::istringstream &msg)
 {
 	std::string command;
-	std::string messages[] = {"JOIN", "PASS", "NICK", "PRIVMSG", "USER", "PART"};
+	std::string messages[] = {"PASS", "USER", "NICK", "PRIVMSG", "JOIN", "PART"};
 	int i;
 
 	msg >> command;
@@ -12,13 +12,21 @@ void	Server::parseMsg(int fd, std::istringstream &msg)
 		if (command == messages[i])
 			break;
 	}
+	if (this->_clients[fd]->getStatus() != registered && i > 1)
+	{
+		if (this->_clients[fd]->getStatus() == pendingPassword)
+			clientLog(fd, ERR_LOGIN);
+		else
+			clientLog(fd, ERR_REGIS);
+		return ;
+	}
 	switch (i)
 	{
 		case (0):
-			// Server::join(msg, findClientByFd(fd));
+			Server::pass(msg, fd);
 			break;
 		case (1):
-			Server::pass(msg, fd);
+			Server::user(msg, fd);
 			break;
 		// case (2):
 		// 	// Server::nick(msg, findClientByFd(fd));
@@ -27,10 +35,12 @@ void	Server::parseMsg(int fd, std::istringstream &msg)
 		// 	// Server::prvmsg(msg, findClientByFd(fd));
 		// 	break;
 		case (4):
-			Server::user(msg, fd);
+			Server::join(msg, fd);
 			break;
-		// case (5)
+		case (5):
+			Server::part(msg, fd);
+			break ;
 		default : 
-			std::cout << "Command not found" << std::endl;
+			clientLog(fd, ERR_CMD_NOT_FND);
 	}
 }

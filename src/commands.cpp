@@ -7,16 +7,19 @@ void Server::pass(std::istringstream &content, int fd)
 
 	content >> password;
 	if (content.gcount() > 0)
-		clientError(this->_clients[fd]->getFd(), ERR_PASS);
+		clientLog(this->_clients[fd]->getFd(), ERR_PASS);
 	else if (this->_clients[fd]->getStatus() != pendingPassword)
-		Server::clientError(this->_clients[fd]->getFd(), ERR_ALRDY_LOG);
+		clientLog(this->_clients[fd]->getFd(), ERR_ALRDY_LOG);
 	else if (password == this->_password)
 	{
 		if (this->_clients[fd]->setStatusUser(pendingUsername))
-			Server::log(this->_clients[fd]->getFd(), LOG_LOGIN);
+		{
+			log(this->_clients[fd]->getFd(), LOG_LOGIN);
+			clientLog(fd, CLOG_PASS);
+		}
 	}
 	else
-		Server::clientError(this->_clients[fd]->getFd(), ERR_BAD_PASS);
+		clientLog(this->_clients[fd]->getFd(), ERR_BAD_PASS);
 }
 	
 void	Server::user(std::istringstream &content, int fd)
@@ -26,15 +29,15 @@ void	Server::user(std::istringstream &content, int fd)
 	if (this->_clients[fd]->getStatus() != pendingUsername)
 	{
 		if (this->_clients[fd]->getStatus() == pendingPassword)
-			clientError(this->_clients[fd]->getFd(), ERR_LOGIN);
+			clientLog(this->_clients[fd]->getFd(), ERR_LOGIN);
 		else
-			clientError(this->_clients[fd]->getFd(), ERR_ALRDY_REGIS);
+			clientLog(this->_clients[fd]->getFd(), ERR_ALRDY_REGIS);
 		return ;
 	}
 	content >> str;
 	if (str.empty())
 	{
-		clientError(this->_clients[fd]->getFd(), ERR_USER);
+		clientLog(this->_clients[fd]->getFd(), ERR_USER);
 		return ;
 	}
 	this->_clients[fd]->setNick(str);
@@ -42,7 +45,7 @@ void	Server::user(std::istringstream &content, int fd)
 	content >> str;
 	if (str.empty())
 	{
-		clientError(this->_clients[fd]->getFd(), ERR_USER);
+		clientLog(this->_clients[fd]->getFd(), ERR_USER);
 		return ;
 	}
 	this->_clients[fd]->setUser(str);
@@ -50,9 +53,10 @@ void	Server::user(std::istringstream &content, int fd)
 	content >> str;
 	if (!str.empty())
 	{
-		clientError(this->_clients[fd]->getFd(), ERR_USER);
+		clientLog(this->_clients[fd]->getFd(), ERR_USER);
 		return ;
 	}
+	this->_clients[fd]->setStatusUser(registered);
 	log(this->_clients[fd]->getFd(), "registered");
 }
 
@@ -63,14 +67,14 @@ void	Server::join(std::istringstream &content, int fd)
 	content >> chName;
 	if (chName.empty())
 	{
-		clientError(this->_clients[fd]->getFd(), ERR_JOIN);
+		clientLog(this->_clients[fd]->getFd(), ERR_JOIN);
 		return ;
 	}
 	if (this->_channels.find(chName) == this->_channels.end())
 	{
 		if (content.gcount() > 0)
 		{
-			clientError(this->_clients[fd]->getFd(), ERR_JOIN);
+			clientLog(this->_clients[fd]->getFd(), ERR_JOIN);
 			return ;
 		}
 		if (chName.at(0) != '&' || chName.at(0) != '#')
@@ -86,21 +90,50 @@ void	Server::join(std::istringstream &content, int fd)
 			content >> password;
 			if (password.empty())
 			{
-				clientError(fd, ERR_REQ_PASS);
+				clientLog(fd, ERR_REQ_PASS);
 				return ;
 			}
 			if (password != this->_channels[chName]->getPassword())
 			{
-				clientError(fd, ERR_WRNG_PASS);
+				clientLog(fd, ERR_WRNG_PASS);
 				return ;
 			}
 		}
-		if (this->_channels[chName]->getConnectedUser() >= (this->_channels[chName]->getUserLimit()))
+		if (this->_channels[chName]->getUserLimit() > 0
+		&& this->_channels[chName]->getConnectedUser() >= (this->_channels[chName]->getUserLimit()))
 		{
-			clientError(fd, ERR_CH_FULL);
+			clientLog(fd, ERR_CH_FULL);
 			return ;
 		}
 		this->_channels[chName]->joinChannel(this->_clients[fd]);	
 		log(*this->_clients[fd], LOG_JOIN + this->_channels[chName]->getName());
 	}
+}
+
+void	Server::part(std::istringstream &content, int fd)
+{
+	std::string	chName;
+
+	content >> chName;
+	if (chName.empty() || content.gcount() > 0)
+	{
+		clientLog(fd, ERR_PART);
+		return ;
+	}
+	if (this->_channels.find(chName) == this->_channels.end())
+	{
+		clientLog(fd, ERR_UNKWN_CH + chName);
+		return ;
+	}
+	if (this->_channels[chName]->isOp(fd))
+	{
+		clientLog(fd, ERR_OP_LEAVER);
+		return ;
+	}
+	if (!this->_channels[chName]->isMember(fd))
+	{
+		clientLog(fd, ERR_NOT_MEMBER);
+		return ;
+	}
+	this->_channels[chName]->leaveChannel(fd);
 }

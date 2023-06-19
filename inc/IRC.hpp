@@ -42,7 +42,7 @@ enum status{
 #include "Client.hpp"
 #include "Channel.hpp"
 
-//--------------------Error Messages-----------------
+//-------------------- Client Error Messages -----------------
 #define ERR_LOGIN		"You must enter the password first, fdp"
 #define ERR_BAD_PASS	"Wrong password"
 #define ERR_ALRDY_LOG	"You already are connected"
@@ -55,10 +55,20 @@ enum status{
 #define ERR_WRNG_PASS	"Wrong channel password. Try again"
 #define ERR_PASS 		"Wrong usage of PASS, try `PASS <password>`"
 #define ERR_PART 		"Wrong usage of PART, try `PART <channelName>`"
+#define ERR_NOT_MEMBER	"You are not member of this channel"
+#define ERR_OP_LEAVER	"You are operator in this channel, try revoke your rights before leaving"
+#define ERR_UNKWN_CH	"Could not find channel "
 #define ERR_USER		"Wrong usage of USER, try `USER <nickname> <username>`"
 #define ERR_MSG_LENGTH	"Your message should not exceed 500 characters"
 
-// ------------------ log Messages -------------------
+//-------------------- Client Log Messages -----------------
+#define CLOG_PASS		"Password accepted"
+#define CLOG_REGIS		"Successfully registered"
+#define CLOG_CRT_CH		"Successfully created channel "
+#define CLOG_JOIN_CH	"Successfully joined channel "
+#define CLOG_LEFT_CH	"You left channel "
+
+// ------------------ Server log Messages -------------------
 
 #define LOG_LOGIN		"password entered successfully"
 #define LOG_JOIN		"joined channel "

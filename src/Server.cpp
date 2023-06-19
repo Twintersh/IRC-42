@@ -2,12 +2,12 @@
 
 
 // server utils
-void	Server::clientError(int fd, std::string err)
+void	Server::clientLog(int fd, std::string str)
 {
 	std::string	msg;
 
 	msg = "[Server] ";
-	msg += err;
+	msg += str;
 	msg += "\n";
 	send(fd, msg.c_str(), msg.size(), 0);
 }
@@ -50,7 +50,7 @@ void	Server::parseRequest(struct epoll_event &curEv)
 	if (bytes == 0)
 		killClient(curEv);
 	else if (bytes >= MAX_BUF)
-		clientError(curEv.data.fd, ERR_MSG_LENGTH);
+		clientLog(curEv.data.fd, ERR_MSG_LENGTH);
 	else
 		parseMsg(curEv.data.fd, strm);
 	memset(buf, 0, sizeof(buf));

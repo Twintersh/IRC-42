@@ -32,16 +32,17 @@ class Server
 		void			join(std::istringstream &content, int fd);
 		void			pass(std::istringstream &content, int fd);
 		// void 			prvmsg(std::istringstream &content, Client current);
+		void			part(std::istringstream &content, int fd);
 		void 			user(std::istringstream &content, int fd);
 
 		//utils
-		void			clientError(int fd, std::string err);
+		void			log(Client client, std::string msgLog);
+		void			clientLog(int fd, std::string str);
 		bool			addPoll(int fd);
 
 		Server(void);
 
 	public:
-		void			log(Client client, std::string msgLog);
 		void			startServer(void);
 
 		Server(const int port, const std::string password);
