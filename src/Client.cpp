@@ -14,7 +14,19 @@ enum status	Client::getStatus(void) const {return this->_status;}
 
 void	Client::setFd(int fd) {this->_fd = fd;}
 
-void	Client::setNick(std::string nick) {this->_nick = nick;}
+std::string	Client::getCNick(void) const { return (this->_color + this->_nick + NC); }
+
+void Client::setColor(void)
+{
+	srand(time(NULL));
+	std::string color[] = {RED, GRN, YEL, BLU, MAG, CYN};
+	this->_color = color[rand() % 6];
+}
+
+void	Client::setNick(std::string nick)
+{
+	this->_nick = nick;
+}
 
 void	Client::setUser(std::string user) {this->_user = user;}
 
@@ -30,11 +42,13 @@ bool	Client::setStatusUser(status newStatus){
 
 Client::Client(int fd): _status(pendingPassword), _fd(fd), _nick(), _user()
 {
+	setColor();
 	return;
 }
 
 Client::Client( void ): _status(pendingPassword), _fd(), _nick(), _user()
 {
+	setColor();
 	return;
 }
 
@@ -47,6 +61,7 @@ Client  &Client::operator=( Client const &rhs)
 {
 	if (this == &rhs)
 		return *this;
+	setColor();
 	this->_fd = rhs._fd;
 	this->_addr = rhs.getAddr();
 	return *this;

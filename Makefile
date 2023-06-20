@@ -5,7 +5,11 @@ SRC =	src/main.cpp	\
 		src/Client.cpp \
 		src/Server.cpp	\
 		src/parsing.cpp	\
-		src/commands.cpp
+		src/commands/join.cpp \
+		src/commands/part.cpp \
+		src/commands/pass.cpp \
+		src/commands/privmsg.cpp \
+		src/commands/user.cpp 
 HEADER =	inc/IRC.hpp \
 			inc/Client.hpp \
 			inc/Server.hpp	\

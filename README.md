@@ -4,31 +4,31 @@ IRC c++ project
 
 ## TODO
 
-- [ ] Server properties:
-	- [ ] CLIENT LIST
-	- [ ] CHANNEL LIST
+- [x] Server properties:
+	- [x] CLIENT LIST
+	- [x] CHANNEL LIST
 
-- [ ] Client properties :
-	- [ ] USERNAME
-	- [ ] NICKNAME
-	- [ ] RIGHTS
-	- [ ] JOINED CHANNELS
+- [x] Client properties :
+	- [x] USERNAME
+	- [x] NICKNAME
+	- [x] RIGHTS
+	- [x] JOINED CHANNELS
 
-- [ ] Channel properties :
-	- [ ] TOPIC
-	- [ ] OPERATORS TOPIC RESTRICTIONS
-	- [ ] USER LIMIT
-	- [ ] INVITE-ONLY MODE
-	- [ ] PASSWORD
-	- [ ] CLIENT / OPERATORS LIST
+- [x] Channel properties :
+	- [x] TOPIC
+	- [x] OPERATORS TOPIC RESTRICTIONS
+	- [x] USER LIMIT
+	- [x] INVITE-ONLY MODE
+	- [x] PASSWORD
+	- [x] CLIENT / OPERATORS LIST
 
-- [ ] Client commands :
-	- [ ] PASS
+- [x] Client commands :
+	- [x] PASS
 	- [ ] NICK
-	- [ ] USER
-	- [ ] JOIN
-	- [ ] PART
-	- [ ] PRVMSG
+	- [x] USER
+	- [x] JOIN
+	- [x] PART
+	- [x] PRVMSG
 
 - [ ] Channel operator commands :
 	- [ ] KICK

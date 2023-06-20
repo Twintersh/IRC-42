@@ -10,12 +10,15 @@ class Client
 		struct	sockaddr_in	_addr;
 		int					_fd;
 		std::string			_nick;
+		std::string			_color;
 		std::string			_user;
+		void				setColor(void);
 
 	public :
 		struct sockaddr_in	getAddr(void) const;
 		int					getFd(void) const;
 		std::string			getNick(void) const;
+		std::string			getCNick(void) const;
 		std::string			getUser(void) const;
 		enum status			getStatus(void) const;
 		bool				setStatusUser(enum status status);

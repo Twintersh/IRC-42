@@ -14,10 +14,8 @@ void	Server::clientLog(int fd, std::string str)
 int	Server::findFdByClientNick(std::string &name)
 {
 	for (vIt_Client it = this->_clients.begin() ; it != this->_clients.end() ; it++)
-	{
 		if (it->second->getNick() == name)
 			return (it->first);
-	}
 	return (-1);
 }
 

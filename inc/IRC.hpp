@@ -73,7 +73,6 @@ enum status{
 #define CLOG_LEFT_CH	"You left channel "
 
 // ------------------ Server log Messages -------------------
-
 #define LOG_LOGIN		"password entered successfully"
 #define LOG_JOIN		"joined channel "
 #define LOG_NEW_CHANNEL	"created new channel "
@@ -82,6 +81,17 @@ enum status{
 #define	LOG_NEW_CLIENT	"connected"
 #define LOG_MSG_CLIENT	"sent message to client"
 #define LOG_MSG_CHANNEL	"sent message to channel"
+
+//--------------------Colors-----------------
+#define BLK "\e[0;30m"
+#define RED "\e[0;31m"
+#define GRN "\e[0;32m"
+#define YEL "\e[0;33m"
+#define BLU "\e[0;34m"
+#define MAG "\e[0;35m"
+#define CYN "\e[0;36m"
+#define WHT "\e[0;37m"
+#define NC	"\e[0;0m"
 
 //--------------------Defines-----------------
 
