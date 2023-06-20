@@ -50,6 +50,7 @@ enum status{
 #define ERR_REGIS		"Register yourself with the USER cmd"
 #define ERR_CMD_NOT_FND	"Command not found"
 #define ERR_JOIN 		"Wrong usage of JOIN, try `JOIN <channelName>`"
+#define ERR_INVITE		"Wrong usage of INVITE, try `INVITE <nickname> <channel>`"
 #define ERR_REQ_PASS	"This channel require a password to join, try JOIN <channelName> <password>"
 #define ERR_CH_FULL		"This channel is full, try again later"
 #define ERR_WRNG_PASS	"Wrong channel password. Try again"
@@ -61,9 +62,7 @@ enum status{
 #define ERR_PRIVMSG		"Wrong usage of PRIVMSG, try `PRIVMSG <destination> <message>`"
 #define ERR_USER		"Wrong usage of USER, try `USER <nickname> <username>`"
 #define ERR_MSG_LENGTH	"Your message should not exceed 500 characters"
-#define ERR_USR_NOT_FND "Dest user not found"
-#define ERR_CHN_NOT_FND "Dest channel not found"
-#define ERR_NOT_MEM		"You are not member of this channel"
+#define ERR_USR_NOT_FND "User not found"
 
 //-------------------- Client Log Messages -----------------
 #define CLOG_PASS		"Password accepted"
@@ -71,6 +70,8 @@ enum status{
 #define CLOG_CRT_CH		"Successfully created channel "
 #define CLOG_JOIN_CH	"Successfully joined channel "
 #define CLOG_LEFT_CH	"You left channel "
+#define CLOG_INVITED	"You have been invited to channel "
+#define CLOG_INVT_SUCC	"client invited to channel successfully"
 
 // ------------------ Server log Messages -------------------
 #define LOG_LOGIN		"password entered successfully"
@@ -79,8 +80,9 @@ enum status{
 #define LOG_CLOSED		"left the server"
 #define LOG_START		"Server started"
 #define	LOG_NEW_CLIENT	"connected"
-#define LOG_MSG_CLIENT	"sent message to client"
-#define LOG_MSG_CHANNEL	"sent message to channel"
+#define LOG_MSG_CLIENT	"sent message to client "
+#define LOG_MSG_CHANNEL	"sent message to channel "
+#define LOG_INVIT		"invited a client to channel "
 
 //--------------------Colors-----------------
 #define BLK "\e[0;30m"

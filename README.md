@@ -28,7 +28,7 @@ IRC c++ project
 	- [x] USER
 	- [x] JOIN
 	- [x] PART
-	- [x] PRVMSG
+	- [x] PRVMSG // missing missing argument check
 
 - [ ] Channel operator commands :
 	- [ ] KICK

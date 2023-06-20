@@ -9,6 +9,12 @@ void	Channel::joinChannel(Client *newClient)
 	return ;
 }
 
+void Channel::inviteClient(Client *newClient)
+{
+	if (this->_invited.find(newClient->getFd()) == this->_invited.end())
+		this->_invited.insert(std::pair<int, Client *>(newClient->getFd(), newClient));
+}
+
 void	Channel::leaveChannel(int fd)
 {
 	this->_members.erase(fd);

@@ -37,6 +37,7 @@ class Channel
 		bool		isOp(int fd);
 		bool		isMember(int fd);
 
+		void		inviteClient(Client *newClient);
 		void		joinChannel(Client *newClient);
 		void		leaveChannel(int fd);
 		void		sendChannel(std::string &msg, int fd);
