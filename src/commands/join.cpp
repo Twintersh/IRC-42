@@ -10,6 +10,11 @@ void	Server::join(std::istringstream &content, int fd)
 		clientLog(fd, ERR_JOIN);
 		return ;
 	}
+	if (chName[0] != '#' && chName[0] != '&')
+	{
+		clientLog(fd, ERR_CH_NAME);
+		return ;
+	}
 	if (this->_channels.find(chName) == this->_channels.end())
 	{
 		if (content.gcount() > 0)
@@ -17,14 +22,17 @@ void	Server::join(std::istringstream &content, int fd)
 			clientLog(fd, ERR_JOIN);
 			return ;
 		}
-		if (chName.at(0) != '&' && chName.at(0) != '#')
-			chName.insert(0, 1, '#');
 		this->_channels.insert(std::pair<std::string, Channel *>(chName, new Channel(chName, this->_clients[fd])));
 		clientLog(fd, CLOG_CRT_CH);
 		log(*this->_clients[fd], LOG_NEW_CHANNEL + chName);
 	}
 	else
 	{
+		if (this->_channels[chName]->getInviteMode() && !this->_channels[chName]->isInvited(fd))
+		{
+			clientLog(fd, ERR_REQ_INVIT);
+			return ;
+		}
 		if (!this->_channels[chName]->getPassword().empty())
 		{
 			std::string	password;

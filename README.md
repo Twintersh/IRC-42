@@ -36,7 +36,7 @@ IRC c++ project
 	- [ ] TOPIC
 	- [ ] MODE
 		- i: change invite only mode
-		- t: change or remove operator restrictions
+		- t: change or remove operator Topic command rights
 		- k: change or remove channel password
 		- o: give or take operator rights
 		- l: change user limit

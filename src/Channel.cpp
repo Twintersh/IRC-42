@@ -35,6 +35,13 @@ bool		Channel::isOp(int fd)
 	return true;
 }
 
+bool		Channel::isInvited(int fd)
+{
+	if (this->_invited.find(fd) == this->_invited.end())
+		return false;
+	return true;
+}
+
 void Channel::sendChannel(std::string &msg, int fd)
 {
 	for (vIt_Client it = _members.begin() ; it != _members.end() ; it++) 

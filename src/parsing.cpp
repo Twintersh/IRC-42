@@ -3,12 +3,11 @@
 void	Server::parseMsg(int fd, std::istringstream &msg)
 {
 	std::string command;
-	std::string messages[] = {"PASS", "USER", "NICK", "PRIVMSG", "JOIN", "PART",
-		"INVITE"};
+	std::string messages[] = {"PASS", "USER", "NICK", "PRIVMSG", "JOIN", "PART", "INVITE", "TOPIC", "KICK"};
 	int i;
 
 	msg >> command;
-	for (i = 0 ; i < 7 ; i++)
+	for (i = 0 ; i < 9 ; i++)
 	{
 		if (command == messages[i])
 			break;
@@ -44,6 +43,12 @@ void	Server::parseMsg(int fd, std::istringstream &msg)
 		case (6):
 			invite(msg, fd);
 			break;
+		case (7):
+			topic(msg, fd);
+			break ;
+		case (8):
+			kick(msg, fd);
+			break ;
 		default : 
 			clientLog(fd, ERR_CMD_NOT_FND);
 	}

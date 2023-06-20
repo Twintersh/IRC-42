@@ -10,8 +10,9 @@ SRC =	src/main.cpp	\
 		src/commands/pass.cpp \
 		src/commands/privmsg.cpp \
 		src/commands/user.cpp  \
-		src/commands/invite.cpp
-
+		src/commands/invite.cpp	\
+		src/commands/kick.cpp	\
+		src/commands/topic.cpp
 HEADER =	inc/IRC.hpp \
 			inc/Client.hpp \
 			inc/Server.hpp	\

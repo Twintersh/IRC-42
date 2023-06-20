@@ -36,6 +36,7 @@ class Server
 		void 			user(std::istringstream &content, int fd);
 		void			kick(std::istringstream &content, int fd);
 		void			invite(std::istringstream &content, int fd);
+		void			topic(std::istringstream &content, int fd);
 
 		//utils
 		void			log(Client client, std::string msgLog);

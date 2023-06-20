@@ -36,6 +36,7 @@ class Channel
 
 		bool		isOp(int fd);
 		bool		isMember(int fd);
+		bool		isInvited(int fd);
 
 		void		inviteClient(Client *newClient);
 		void		joinChannel(Client *newClient);

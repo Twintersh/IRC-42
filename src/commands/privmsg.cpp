@@ -11,7 +11,7 @@ void Server::privmsg(std::istringstream &content, int fd)
 	if (dest.empty() || txt.empty())
 	{
 		clientLog(fd, ERR_PRIVMSG);
-		return
+		return;
 	}
 	if (dest[0] == '#' || dest[0] == '&')
 	{

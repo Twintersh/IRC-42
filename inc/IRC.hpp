@@ -51,12 +51,20 @@ enum status{
 #define ERR_CMD_NOT_FND	"Command not found"
 #define ERR_JOIN 		"Wrong usage of JOIN, try `JOIN <channelName>`"
 #define ERR_INVITE		"Wrong usage of INVITE, try `INVITE <nickname> <channel>`"
-#define ERR_REQ_PASS	"This channel require a password to join, try JOIN <channelName> <password>"
+#define ERR_CH_NAME		"Channel names must start with '#' or '&'"
+#define ERR_REQ_PASS	"This channel require a password to join, try JOIN <channelName> [password]"
 #define ERR_CH_FULL		"This channel is full, try again later"
+#define ERR_REQ_INVIT	"You need an invitation to join this channel"
 #define ERR_WRNG_PASS	"Wrong channel password. Try again"
 #define ERR_PASS 		"Wrong usage of PASS, try `PASS <password>`"
 #define ERR_PART 		"Wrong usage of PART, try `PART <channelName>`"
+#define ERR_KICK		"Wrong usage of KICK, try `KICK <channelName> <nickname>`"
+#define ERR_TOPIC		"Wrong usage of TOPIC, try TOPIC <channelName> [newTopic]"
+#define ERR_NO_TOPIC	"This channel has no Topic for the moment"
 #define ERR_NOT_MEMBER	"You are not member of this channel"
+#define ERR_KICK_OP		"This user is operator on this channel"
+#define ERR_USR_NO_MEM	"This user is not a member of this channel"
+#define ERR_NOT_OP		"You are not operator in this channel"
 #define ERR_OP_LEAVER	"You are operator in this channel, try revoke your rights before leaving"
 #define ERR_UNKWN_CH	"Could not find channel "
 #define ERR_PRIVMSG		"Wrong usage of PRIVMSG, try `PRIVMSG <destination> <message>`"
@@ -72,6 +80,8 @@ enum status{
 #define CLOG_LEFT_CH	"You left channel "
 #define CLOG_INVITED	"You have been invited to channel "
 #define CLOG_INVT_SUCC	"client invited to channel successfully"
+#define CLOG_KICK_USR	"Kicked user "
+#define CLOG_TOPIC_SET	"Change topic channel for : "
 
 // ------------------ Server log Messages -------------------
 #define LOG_LOGIN		"password entered successfully"
@@ -83,6 +93,7 @@ enum status{
 #define LOG_MSG_CLIENT	"sent message to client "
 #define LOG_MSG_CHANNEL	"sent message to channel "
 #define LOG_INVIT		"invited a client to channel "
+#define LOG_KICK_CH		"kicked user from channel"
 
 //--------------------Colors-----------------
 #define BLK "\e[0;30m"
