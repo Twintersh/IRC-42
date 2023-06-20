@@ -41,6 +41,8 @@ class Channel
 		void		inviteClient(Client *newClient);
 		void		joinChannel(Client *newClient);
 		void		leaveChannel(int fd);
+		void		addOp(Client *newOp);
+		void		removeOp(int fd);
 		void		sendChannel(std::string &msg, int fd);
 
 

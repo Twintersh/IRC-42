@@ -23,6 +23,7 @@
 #include <netinet/in.h>
 #include <sys/epoll.h>
 #include <sstream>
+#include <cstdlib>
 
 class Client;
 class Channel;
@@ -50,6 +51,7 @@ enum status{
 #define ERR_REGIS		"Register yourself with the USER cmd"
 #define ERR_CMD_NOT_FND	"Command not found"
 #define ERR_JOIN 		"Wrong usage of JOIN, try `JOIN <channelName>`"
+#define ERR_MODE		"frr va lire la rfc la flemme de t'expliquer"
 #define ERR_INVITE		"Wrong usage of INVITE, try `INVITE <nickname> <channel>`"
 #define ERR_CH_NAME		"Channel names must start with '#' or '&'"
 #define ERR_REQ_PASS	"This channel require a password to join, try JOIN <channelName> [password]"
@@ -65,12 +67,15 @@ enum status{
 #define ERR_KICK_OP		"This user is operator on this channel"
 #define ERR_USR_NO_MEM	"This user is not a member of this channel"
 #define ERR_NOT_OP		"You are not operator in this channel"
+#define ERR_USRA_OP		"This user is already operator"
+#define ERR_USRN_OP		"This user is not operator on this channel"
 #define ERR_OP_LEAVER	"You are operator in this channel, try revoke your rights before leaving"
 #define ERR_UNKWN_CH	"Could not find channel "
 #define ERR_PRIVMSG		"Wrong usage of PRIVMSG, try `PRIVMSG <destination> <message>`"
 #define ERR_USER		"Wrong usage of USER, try `USER <nickname> <username>`"
 #define ERR_MSG_LENGTH	"Your message should not exceed 500 characters"
 #define ERR_USR_NOT_FND "User not found"
+#define ERR_MODE_LIMIT	"Limit argument is not a number"
 
 //-------------------- Client Log Messages -----------------
 #define CLOG_PASS		"Password accepted"
@@ -82,6 +87,11 @@ enum status{
 #define CLOG_INVT_SUCC	"client invited to channel successfully"
 #define CLOG_KICK_USR	"Kicked user "
 #define CLOG_TOPIC_SET	"Change topic channel for : "
+#define CLOG_GRAN_OP	"Granted "
+#define CLOG_REV_OP		"Revoked "
+#define CLOG_LIMIT		"limit changed successfully"
+#define CLOG_PASS_REM	"Removed password from channel "
+#define CLOG_PASS_CHG	"Changed password from channel "
 
 // ------------------ Server log Messages -------------------
 #define LOG_LOGIN		"password entered successfully"
@@ -94,6 +104,11 @@ enum status{
 #define LOG_MSG_CHANNEL	"sent message to channel "
 #define LOG_INVIT		"invited a client to channel "
 #define LOG_KICK_CH		"kicked user from channel"
+#define LOG_GRAN_OP		"granted "
+#define LOG_REV_OP		"Revoked"
+#define LOG_LIMIT		"changed number of limit user of channel "
+#define LOG_PASS_REM	"removed password from channel "
+#define LOG_PASS_CHG	"changed password from channel "
 
 //--------------------Colors-----------------
 #define BLK "\e[0;30m"

@@ -37,6 +37,12 @@ class Server
 		void			kick(std::istringstream &content, int fd);
 		void			invite(std::istringstream &content, int fd);
 		void			topic(std::istringstream &content, int fd);
+		void			mode(std::istringstream &content, int fd);
+
+		// mode utils
+		void			limitUserChannel(std::string chName, int limit, int fd, char sign);
+		void			passwordChange(std::string chName, std::string pass, int fd, char sign);
+		void			operatorPriv(std::string chName, std::string user, int fd, char sign);
 
 		//utils
 		void			log(Client client, std::string msgLog);

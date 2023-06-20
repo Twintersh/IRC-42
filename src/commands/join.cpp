@@ -6,54 +6,36 @@ void	Server::join(std::istringstream &content, int fd)
 
 	content >> chName;
 	if (chName.empty())
-	{
-		clientLog(fd, ERR_JOIN);
-		return ;
-	}
+		return (clientLog(fd, ERR_JOIN));
+
 	if (chName[0] != '#' && chName[0] != '&')
-	{
-		clientLog(fd, ERR_CH_NAME);
-		return ;
-	}
+		return (clientLog(fd, ERR_CH_NAME));
+
 	if (this->_channels.find(chName) == this->_channels.end())
 	{
 		if (content.gcount() > 0)
-		{
-			clientLog(fd, ERR_JOIN);
-			return ;
-		}
+			return (clientLog(fd, ERR_JOIN));
 		this->_channels.insert(std::pair<std::string, Channel *>(chName, new Channel(chName, this->_clients[fd])));
-		clientLog(fd, CLOG_CRT_CH);
-		log(*this->_clients[fd], LOG_NEW_CHANNEL + chName);
+		return (clientLog(fd, CLOG_CRT_CH));
 	}
 	else
 	{
 		if (this->_channels[chName]->getInviteMode() && !this->_channels[chName]->isInvited(fd))
-		{
-			clientLog(fd, ERR_REQ_INVIT);
-			return ;
-		}
+			return (clientLog(fd, ERR_REQ_INVIT));
+
 		if (!this->_channels[chName]->getPassword().empty())
 		{
 			std::string	password;
 			content >> password;
 			if (password.empty())
-			{
-				clientLog(fd, ERR_REQ_PASS);
-				return ;
-			}
+				return (clientLog(fd, ERR_REQ_PASS));
 			if (password != this->_channels[chName]->getPassword())
-			{
-				clientLog(fd, ERR_WRNG_PASS);
-				return ;
-			}
+				return (clientLog(fd, ERR_WRNG_PASS));
 		}
 		if (this->_channels[chName]->getUserLimit() > 0
 		&& this->_channels[chName]->getConnectedUser() >= (this->_channels[chName]->getUserLimit()))
-		{
-			clientLog(fd, ERR_CH_FULL);
-			return ;
-		}
+			return (clientLog(fd, ERR_CH_FULL));
+			
 		this->_channels[chName]->joinChannel(this->_clients[fd]);
 		clientLog(fd, CLOG_JOIN_CH);
 		log(*this->_clients[fd], LOG_JOIN + this->_channels[chName]->getName());

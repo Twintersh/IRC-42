@@ -6,25 +6,17 @@ void	Server::part(std::istringstream &content, int fd)
 
 	content >> chName;
 	if (chName.empty() || content.gcount() > 0)
-	{
-		clientLog(fd, ERR_PART);
-		return ;
-	}
+		return (clientLog(fd, ERR_PART));
+
 	if (this->_channels.find(chName) == this->_channels.end())
-	{
-		clientLog(fd, ERR_UNKWN_CH + chName);
-		return ;
-	}
+		return (clientLog(fd, ERR_UNKWN_CH + chName));
+
 	if (this->_channels[chName]->isOp(fd))
-	{
-		clientLog(fd, ERR_OP_LEAVER);
-		return ;
-	}
+		return (clientLog(fd, ERR_OP_LEAVER));
+
 	if (!this->_channels[chName]->isMember(fd))
-	{
-		clientLog(fd, ERR_NOT_MEMBER);
-		return ;
-	}
+		return (clientLog(fd, ERR_NOT_MEMBER));
+
 	this->_channels[chName]->leaveChannel(fd);
 	clientLog(fd, CLOG_LEFT_CH);
 }

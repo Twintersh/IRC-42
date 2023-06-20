@@ -21,6 +21,16 @@ void	Channel::leaveChannel(int fd)
 	return ;
 }
 
+void	Channel::addOp(Client *newOp)
+{
+	this->_operators.insert(std::pair<int, Client *>(newOp->getFd(), newOp));
+}
+
+void	Channel::removeOp(int fd)
+{
+	this->_operators.erase(fd);
+}
+
 bool		Channel::isMember(int fd)
 {
 	if (this->_members.find(fd) == this->_members.end())

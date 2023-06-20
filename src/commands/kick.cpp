@@ -31,36 +31,24 @@ void	Server::kick(std::istringstream &content, int fd)
 	content >> str[0];
 	content >> str[1];
 	if (str[0].empty() || str[1].empty())
-	{
-		clientLog(fd, ERR_KICK);
-		return ;
-	}
+		return (clientLog(fd, ERR_KICK));
+
 	if (this->_channels.find(str[0]) == this->_channels.end())
-	{
-		clientLog(fd, ERR_UNKWN_CH);
-		return ;
-	}
+		return (clientLog(fd, ERR_UNKWN_CH));
+
 	nickFd = findFdByClientNick(str[1]);
 	if (nickFd == -1)
-	{
-		clientLog(fd, ERR_USR_NOT_FND);
-		return ;
-	}
+		return (clientLog(fd, ERR_USR_NOT_FND));
+
 	if (!this->_channels[str[0]]->isMember(nickFd))
-	{
-		clientLog(fd, ERR_USR_NO_MEM);
-		return ;
-	}
+		return (clientLog(fd, ERR_USR_NO_MEM));
+
 	if (!this->_channels[str[0]]->isOp(fd))
-	{
-		clientLog(fd, ERR_NOT_OP);
-		return ;
-	}
+		return (clientLog(fd, ERR_NOT_OP));
+
 	if (this->_channels[str[0]]->isOp(nickFd))
-	{
-		clientLog(fd, ERR_KICK_OP);
-		return ;
-	}
+		return (clientLog(fd, ERR_KICK_OP));
+
 	this->_channels[str[0]]->leaveChannel(nickFd);
 	kickMessage(content, *this->_clients[fd], nickFd, str[0]);
 	clientLog(fd, CLOG_KICK_USR + str[1]);

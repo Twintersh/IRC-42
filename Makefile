@@ -12,7 +12,8 @@ SRC =	src/main.cpp	\
 		src/commands/user.cpp  \
 		src/commands/invite.cpp	\
 		src/commands/kick.cpp	\
-		src/commands/topic.cpp
+		src/commands/topic.cpp	\
+		src/commands/mode.cpp
 HEADER =	inc/IRC.hpp \
 			inc/Client.hpp \
 			inc/Server.hpp	\

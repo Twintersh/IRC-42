@@ -9,10 +9,7 @@ void	Server::invite(std::istringstream &content, int fd)
 
 	content >> username >> channelName;
 	if (username.empty() || channelName.empty() || content.gcount() > 0)
-	{
-		clientLog(fd, ERR_INVITE);
-		return;
-	}
+		return (clientLog(fd, ERR_INVITE));
 	channelIt = this->_channels.find(channelName);
 	clientFd = findFdByClientNick(username);
 	if (channelIt == this->_channels.end() || clientFd == -1)
@@ -24,10 +21,7 @@ void	Server::invite(std::istringstream &content, int fd)
 		return;
 	}
 	if (!channelIt->second->isMember(fd))
-	{
-		clientLog(fd, ERR_NOT_MEMBER);
-		return;
-	}
+		return (clientLog(fd, ERR_NOT_MEMBER));
 	if (!channelIt->second->getUserLimit() ||
 		channelIt->second->getConnectedUser() < channelIt->second->getUserLimit())
 	{
