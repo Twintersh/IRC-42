@@ -68,6 +68,7 @@ void Server::killClient(struct epoll_event &curEv)
 	close(curEv.data.fd);
 	epoll_ctl(this->_epfd, EPOLL_CTL_DEL, curEv.data.fd, &curEv);
 	log(curEv.data.fd, LOG_CLOSED);
+	delete this->_clients[curEv.data.fd];
 	this->_clients.erase(curEv.data.fd);
 }
 
@@ -78,7 +79,7 @@ void	Server::readStdin(void)
 
 	getline(std::cin, stdin_content);
 	if (stdin_content == "exit")
-		exit(0);
+		throw std::logic_error("Server shutdown");
 }
 
 void	Server::newClient(void)
@@ -87,6 +88,7 @@ void	Server::newClient(void)
 	int	fd;
 	socklen_t addrLen = sizeof(struct sockaddr);
 
+	memset(&cAddr, 0, addrLen);
 	fd = accept(this->_fd, (struct sockaddr *)&cAddr, &addrLen);
 	if (fd == -1)
 		throw std::range_error("accept");
@@ -96,9 +98,15 @@ void	Server::newClient(void)
 	this->_clients.insert(std::pair<int, Client *>(fd, new Client(fd)));
 }
 
+void	signalHandler(int sig)
+{
+	if (sig == SIGINT)
+		throw std::logic_error("server shutdown");
+}
 
 void	Server::startServer( void )
 {
+	std::signal(SIGINT, signalHandler);
 	log(Client(-2), LOG_START);
 	struct epoll_event	eventList[MAX_EVENTS];
 
@@ -136,7 +144,11 @@ Server::Server(void)
 
 Server::Server(const int port, const std::string password) : _password(password)
 {
+	int	opt = 1;
+
+	memset(&this->_ev, 0, sizeof(this->_ev));
 	this->_fd = socket(AF_INET, SOCK_STREAM, 0);
+	setsockopt(this->_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
 	this->_addrLen = sizeof(struct sockaddr);
 	memset(&this->_addr, 0, sizeof(this->_addr));
 	this->_addr.sin_family = AF_INET;
@@ -166,5 +178,20 @@ Server  &Server::operator=(Server const &rhs)
 
 Server::~Server(void)
 {
+	vIt_Client it = this->_clients.begin();
+	while (it != this->_clients.end())
+	{
+		delete it->second;
+		it++;
+	}
+	this->_clients.clear();
+	vIt_Channel itC = this->_channels.begin();
+	while (itC != this->_channels.end())
+	{
+		delete itC->second;
+		itC++;
+	}
+	this->_channels.clear();
+	close(this->_fd);
 	return ;
 }

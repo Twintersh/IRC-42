@@ -17,9 +17,9 @@ void Server::privmsg(std::istringstream &content, int fd)
 			return (clientLog(fd, ERR_UNKWN_CH));
 		if (channel->second->isMember(fd))
 		{
-			msg += this->_clients[fd]->getCNick() + "] in <" + channel->second->getName() + ">:" + txt;
+			msg += this->_clients[fd]->getCNick() + "] in <" + channel->second->getCName() + ">:" + txt;
 			channel->second->sendChannel(msg, fd);
-			log(*this->_clients[fd], LOG_MSG_CHANNEL + channel->second->getName());
+			log(*this->_clients[fd], LOG_MSG_CHANNEL + channel->second->getCName());
 		}
 		else
 			return (clientLog(fd, ERR_NOT_MEMBER));

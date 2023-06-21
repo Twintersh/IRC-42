@@ -47,8 +47,6 @@ class Server
 		//utils
 		void			log(Client client, std::string msgLog);
 		void			clientLog(int fd, std::string str);
-
-		//utils
 		int				findFdByClientNick(std::string &name);
 		bool			addPoll(int fd);
 

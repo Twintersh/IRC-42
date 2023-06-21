@@ -4,6 +4,7 @@
 //--------------------Libraries-----------------
 #include <iostream>
 #include <string>
+#include <csignal>
 #include <unistd.h>
 #include <stdlib.h>
 #include <errno.h>
@@ -50,6 +51,7 @@ enum status{
 #define ERR_ALRDY_REGIS	"You already are registered"
 #define ERR_REGIS		"Register yourself with the USER cmd"
 #define ERR_CMD_NOT_FND	"Command not found"
+#define ERR_NICK_TAKEN	"This nickname is not available, try another one"
 #define ERR_JOIN 		"Wrong usage of JOIN, try `JOIN <channelName>`"
 #define ERR_MODE		"frr va lire la rfc la flemme de t'expliquer"
 #define ERR_INVITE		"Wrong usage of INVITE, try `INVITE <nickname> <channel>`"
@@ -111,15 +113,15 @@ enum status{
 #define LOG_PASS_CHG	"changed password from channel "
 
 //--------------------Colors-----------------
-#define BLK "\e[0;30m"
-#define RED "\e[0;31m"
-#define GRN "\e[0;32m"
-#define YEL "\e[0;33m"
-#define BLU "\e[0;34m"
-#define MAG "\e[0;35m"
-#define CYN "\e[0;36m"
-#define WHT "\e[0;37m"
-#define NC	"\e[0;0m"
+#define BLK "\e[1;30m"
+#define RED "\e[1;31m"
+#define GRN "\e[1;32m"
+#define YEL "\e[1;33m"
+#define BLU "\e[1;34m"
+#define MAG "\e[1;35m"
+#define CYN "\e[1;36m"
+#define WHT "\e[1;37m"
+#define NC	"\e[0m"
 
 //--------------------Defines-----------------
 

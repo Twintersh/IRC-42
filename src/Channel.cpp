@@ -9,6 +9,13 @@ void	Channel::joinChannel(Client *newClient)
 	return ;
 }
 
+void Channel::setColor(void)
+{
+	srand(time(NULL));
+	std::string color[] = {RED, GRN, YEL, BLU, MAG, CYN};
+	this->_color = "\e[3;4m" + color[rand() % 6];
+}
+
 void Channel::inviteClient(Client *newClient)
 {
 	if (this->_invited.find(newClient->getFd()) == this->_invited.end())
@@ -74,6 +81,10 @@ int			Channel::getUserLimit(void) const {return this->_userLimit;}
 int			Channel::getConnectedUser(void) const {return this->_members.size() + this->_operators.size();}
 
 std::string	Channel::getName(void) const {return this->_name;}
+
+std::string Channel::getCName(void) const {
+	return (_color + this->_name + NC);
+}
 
 std::string	Channel::getTopic(void) const {return this->_topic;}
 

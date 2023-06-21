@@ -2,7 +2,8 @@
 
 void	Server::user(std::istringstream &content, int fd)
 {
-	std::string	str;
+	std::string	nick;
+	std::string	user;
 
 	if (this->_clients[fd]->getStatus() != pendingUsername)
 	{
@@ -12,28 +13,14 @@ void	Server::user(std::istringstream &content, int fd)
 			clientLog(fd, ERR_ALRDY_REGIS);
 		return ;
 	}
-	content >> str;
-	if (str.empty())
-	{
-		clientLog(fd, ERR_USER);
-		return ;
-	}
-	this->_clients[fd]->setNick(str);
-	str.clear();
-	content >> str;
-	if (str.empty())
-	{
-		clientLog(fd, ERR_USER);
-		return ;
-	}
-	this->_clients[fd]->setUser(str);
-	str.clear();
-	content >> str;
-	if (!str.empty())
-	{
-		clientLog(fd, ERR_USER);
-		return ;
-	}
+	content >> nick;
+	content >> user;
+	if (nick.empty() || user.empty() || content.gcount() > 0) 
+		return (clientLog(fd, ERR_USER));
+	if (findFdByClientNick(nick) != -1)
+		return (clientLog(fd, ERR_NICK_TAKEN));
+	this->_clients[fd]->setNick(nick);
+	this->_clients[fd]->setUser(user);
 	this->_clients[fd]->setStatusUser(registered);
 	clientLog(fd, CLOG_REGIS);
 	log(fd, "registered");

@@ -11,6 +11,7 @@ class Channel
 		bool				_inviteOnly;
 		bool				_topicRights;
 		int					_userLimit;
+		std::string			_color;
 		std::string			_name;
 		std::string			_topic;
 		std::string			_password;
@@ -18,6 +19,7 @@ class Channel
 		std::map<int, Client *>	_members;
 		std::map<int, Client *>	_invited;
 
+		void	setColor(void);
 		Channel( void );
 	public :
 		bool		getInviteMode(void) const;
@@ -25,6 +27,7 @@ class Channel
 		int			getUserLimit(void) const;
 		int			getConnectedUser(void) const;
 		std::string	getName(void) const;
+		std::string getCName(void) const;
 		std::string	getTopic(void) const;
 		std::string	getPassword(void) const;
 		void		setInviteMode(bool mode);
