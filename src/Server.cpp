@@ -48,19 +48,27 @@ bool	Server::addPoll(int fd)
 
 void	Server::parseRequest(struct epoll_event &curEv)
 {
+	int	cFd = curEv.data.fd;
+	std::string	str;
 	char buf[6000];
 	int	bytes;
 
-	bytes = recv(curEv.data.fd, buf, sizeof(buf), 0);
-	std::string str(buf);
-	std::istringstream strm(str);
+	bytes = recv(cFd, buf, sizeof(buf), 0);
+	str = buf;
+	this->_clients[cFd]->joinCmd(str);
+	str = this->_clients[cFd]->getCmd();
+	std::cout << str << std::endl;
 	if (bytes == 0)
 		killClient(curEv);
 	else if (bytes >= MAX_BUF)
 		clientLog(curEv.data.fd, ERR_MSG_LENGTH);
-	else
+	else if (str.find('\n') != std::string::npos)
+	{
+		std::istringstream strm(str);
+		this->_clients[cFd]->clearCmd();
 		parseMsg(curEv.data.fd, strm);
-	memset(buf, 0, sizeof(buf));
+	}
+	memset(&buf, 0, sizeof(buf));
 }
 
 void Server::killClient(struct epoll_event &curEv)
@@ -71,7 +79,6 @@ void Server::killClient(struct epoll_event &curEv)
 	delete this->_clients[curEv.data.fd];
 	this->_clients.erase(curEv.data.fd);
 }
-
 
 void	Server::readStdin(void)
 {

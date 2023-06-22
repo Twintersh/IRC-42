@@ -6,10 +6,11 @@
 class Client
 {
 	private :
-		enum status				_status;
+		enum status			_status;
 		struct	sockaddr_in	_addr;
 		int					_fd;
 		std::string			_nick;
+		std::string			_curCmd;
 		std::string			_color;
 		std::string			_user;
 		void				setColor(void);
@@ -20,11 +21,14 @@ class Client
 		std::string			getNick(void) const;
 		std::string			getCNick(void) const;
 		std::string			getUser(void) const;
+		std::string			getCmd(void) const;
 		enum status			getStatus(void) const;
 		bool				setStatusUser(enum status status);
 		void				setFd(int fd);
 		void				setNick(std::string nick);
 		void				setUser(std::string user);
+		void				joinCmd(std::string &join);
+		void				clearCmd(void);
 
 		Client(void);
 		Client(int fd);

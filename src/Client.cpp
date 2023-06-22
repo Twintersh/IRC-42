@@ -12,9 +12,17 @@ std::string	Client::getUser(void) const {return this->_user;}
 
 enum status	Client::getStatus(void) const {return this->_status;}
 
+std::string Client::getCmd(void) const {return this->_curCmd;}
+
+void Client::joinCmd(std::string &join) {this->_curCmd += join;}
+
+void Client::clearCmd(void) {this->_curCmd.clear();}
+
+void	Client::setNick(std::string nick) {this->_nick = nick;}
+
 void	Client::setFd(int fd) {this->_fd = fd;}
 
-std::string	Client::getCNick(void) const { return (this->_color + this->_nick + NC); }
+std::string	Client::getCNick(void) const { return (this->_color + this->_nick + NC);}
 
 void Client::setColor(void)
 {
@@ -23,10 +31,6 @@ void Client::setColor(void)
 	this->_color = color[rand() % 6];
 }
 
-void	Client::setNick(std::string nick)
-{
-	this->_nick = nick;
-}
 
 void	Client::setUser(std::string user) {this->_user = user;}
 
