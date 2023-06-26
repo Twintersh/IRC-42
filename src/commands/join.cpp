@@ -13,7 +13,7 @@ void	Server::join(std::istringstream &content, int fd)
 
 	if (this->_channels.find(chName) == this->_channels.end())
 	{
-		if (content.gcount() > 0)
+		if (!checkEmpty(content))
 			return (clientLog(fd, ERR_JOIN));
 		this->_channels.insert(std::pair<std::string, Channel *>(chName, new Channel(chName, this->_clients[fd])));
 		return (clientLog(fd, CLOG_CRT_CH));
@@ -22,6 +22,9 @@ void	Server::join(std::istringstream &content, int fd)
 	{
 		if (this->_channels[chName]->getInviteMode() && !this->_channels[chName]->isInvited(fd))
 			return (clientLog(fd, ERR_REQ_INVIT));
+
+		if (this->_channels[chName]->isMember(fd))
+			return (clientLog(fd, ERR_ALR_MEM));
 
 		if (!this->_channels[chName]->getPassword().empty())
 		{

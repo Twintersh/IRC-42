@@ -2,25 +2,32 @@
 
 void	Server::user(std::istringstream &content, int fd)
 {
-	std::string	nick;
 	std::string	user;
+	std::string	serverName;
+	std::string	hostName;
+	std::string	realName;
 
-	if (this->_clients[fd]->getStatus() != pendingUsername)
+	enum status status = this->_clients[fd]->getStatus();
+	if (status != pendingUsername)
 	{
-		if (this->_clients[fd]->getStatus() == pendingPassword)
-			clientLog(fd, ERR_LOGIN);
+		if (status == pendingPassword)
+			clientLog(fd, ERR_PEND_PASS);
+		else if (status == pendingNickname)
+			clientLog(fd, ERR_PEND_NICK);
 		else
 			clientLog(fd, ERR_ALRDY_REGIS);
 		return ;
 	}
-	content >> nick;
 	content >> user;
-	if (nick.empty() || user.empty() || content.gcount() > 0) 
+	content >> serverName;
+	content >> hostName;
+	content >> realName;
+	if (user.empty() || serverName.empty() || hostName.empty() || realName.empty() || !checkEmpty(content)) 
 		return (clientLog(fd, ERR_USER));
-	if (findFdByClientNick(nick) != -1)
-		return (clientLog(fd, ERR_NICK_TAKEN));
-	this->_clients[fd]->setNick(nick);
 	this->_clients[fd]->setUser(user);
+	this->_clients[fd]->setServerName(serverName);
+	this->_clients[fd]->setHostName(hostName);
+	this->_clients[fd]->setRealName(realName);
 	this->_clients[fd]->setStatusUser(registered);
 	clientLog(fd, CLOG_REGIS);
 	log(fd, "registered");

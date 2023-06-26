@@ -1,14 +1,29 @@
 #include "Server.hpp"
 
 // server utils
+bool	Server::checkEmpty(std::istringstream &content)
+{
+	std::string tmp;
+
+	content >> tmp;
+	if (tmp.empty())
+		return (true);
+	return (false);
+}
+
 void	Server::clientLog(int fd, std::string str)
 {
-	std::string	msg;
+	if (str == CAPY)
+		send(fd, str.c_str(), str.size(), 0);
+	else
+	{
+		std::string	msg;
 
-	msg = "[Server] ";
-	msg += str;
-	msg += "\n";
-	send(fd, msg.c_str(), msg.size(), 0);
+		msg = "[Server] ";
+		msg += str;
+		msg += "\n";
+		send(fd, msg.c_str(), msg.size(), 0);
+	}
 }
 
 int	Server::findFdByClientNick(std::string &name)
@@ -34,9 +49,7 @@ void	Server::log(Client client, std::string msgLog)
 
 bool	Server::addPoll(int fd)
 {
-	int flags = fcntl(fd, F_GETFL, 0);
-
-	fcntl(fd, F_SETFL, flags | O_NONBLOCK);
+	fcntl(fd, F_SETFL, O_NONBLOCK);
 	this->_ev.events = EPOLLIN;
 	this->_ev.data.fd = fd;
 	if (epoll_ctl(this->_epfd, EPOLL_CTL_ADD, fd, &this->_ev) == -1)
@@ -57,7 +70,6 @@ void	Server::parseRequest(struct epoll_event &curEv)
 	str = buf;
 	this->_clients[cFd]->joinCmd(str);
 	str = this->_clients[cFd]->getCmd();
-	std::cout << str << std::endl;
 	if (bytes == 0)
 		killClient(curEv);
 	else if (bytes >= MAX_BUF)
@@ -67,6 +79,7 @@ void	Server::parseRequest(struct epoll_event &curEv)
 		std::istringstream strm(str);
 		this->_clients[cFd]->clearCmd();
 		parseMsg(curEv.data.fd, strm);
+		send(curEv.data.fd, "🦛> ", 7, 0);
 	}
 	memset(&buf, 0, sizeof(buf));
 }
@@ -103,17 +116,19 @@ void	Server::newClient(void)
 	if (!addPoll(fd))
 		throw std::range_error("addPoll");
 	this->_clients.insert(std::pair<int, Client *>(fd, new Client(fd)));
+	clientLog(fd, CAPY);
 }
 
 void	signalHandler(int sig)
 {
-	if (sig == SIGINT)
-		throw std::logic_error("server shutdown");
+	(void)sig;
+	throw std::logic_error("server shutdown");
 }
 
 void	Server::startServer( void )
 {
 	std::signal(SIGINT, signalHandler);
+	std::signal(SIGHUP, signalHandler);
 	log(Client(-2), LOG_START);
 	struct epoll_event	eventList[MAX_EVENTS];
 

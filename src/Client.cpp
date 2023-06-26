@@ -14,6 +14,8 @@ enum status	Client::getStatus(void) const {return this->_status;}
 
 std::string Client::getCmd(void) const {return this->_curCmd;}
 
+std::string	Client::getCNick(void) const { return (this->_color + this->_nick + NC);}
+
 void Client::joinCmd(std::string &join) {this->_curCmd += join;}
 
 void Client::clearCmd(void) {this->_curCmd.clear();}
@@ -22,7 +24,13 @@ void	Client::setNick(std::string nick) {this->_nick = nick;}
 
 void	Client::setFd(int fd) {this->_fd = fd;}
 
-std::string	Client::getCNick(void) const { return (this->_color + this->_nick + NC);}
+void	Client::setUser(std::string user) {this->_user = user;}
+
+void	Client::setServerName(std::string serverName) {this->_serverName = serverName;}
+
+void	Client::setHostName(std::string hostName) {this->_hostName = hostName;}
+
+void	Client::setRealName(std::string realName) {this->_realName = realName;}
 
 void Client::setColor(void)
 {
@@ -32,7 +40,6 @@ void Client::setColor(void)
 }
 
 
-void	Client::setUser(std::string user) {this->_user = user;}
 
 bool	Client::setStatusUser(status newStatus){
 	if (newStatus == _status + 1)

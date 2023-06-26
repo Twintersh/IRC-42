@@ -17,7 +17,7 @@ void	Server::topic(std::istringstream &content, int fd)
 
 	content >> chName;
 	content >> topic;
-	if (chName.empty() || content.gcount() > 0)
+	if (chName.empty() || !checkEmpty(content))
 	{
 		clientLog(fd, ERR_TOPIC);
 		return ;

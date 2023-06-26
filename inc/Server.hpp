@@ -18,6 +18,7 @@ class Server
 		std::map<std::string, Channel *>	_channels;
 		const std::string					_password;
 
+		bool								checkEmpty(std::istringstream &content);
 	private:
 		//main functions
 		void			newClient(void);
@@ -38,6 +39,8 @@ class Server
 		void			invite(std::istringstream &content, int fd);
 		void			topic(std::istringstream &content, int fd);
 		void			mode(std::istringstream &content, int fd);
+		void			nick(std::istringstream &content, int fd);
+		void			help(std::istringstream &content, int fd);
 
 		// mode utils
 		void			limitUserChannel(std::string chName, int limit, int fd, char sign);

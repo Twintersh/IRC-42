@@ -107,12 +107,14 @@ void		Channel::setTopic(std::string topic) {this->_topic = topic;}
 Channel::Channel( void ): _inviteOnly(false), _topicRights(false), _userLimit(0), _name(), 
 _topic(),  _password()
 {
+	setColor();
 	return ;
 }
 
 Channel::Channel( const std::string &name, Client *op): _inviteOnly(false),
 _topicRights(false), _userLimit(0),_name(name), _topic(), _password()
 {
+	setColor();
 	this->_operators.insert(std::pair<int, Client *>(op->getFd(), op));
 	this->_members.insert(std::pair<int, Client *>(op->getFd(), op));
 	return ;
@@ -127,6 +129,7 @@ Channel  &Channel::operator=( Channel const &rhs)
 {
 	if (this == &rhs)
 		return *this;
+	setColor();
 	this->_name = rhs._name;
 	this->_topic = rhs._topic;
 	this->_password = rhs._password;

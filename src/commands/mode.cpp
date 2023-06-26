@@ -28,7 +28,7 @@ void	Server::operatorPriv(std::string chName, std::string nick, int fd, char sig
 		return (clientLog(fd, ERR_USR_NOT_FND));
 
 	if (!this->_channels[chName]->isMember(nickFd))
-		return (clientLog(fd, ERR_NOT_MEMBER));
+		return (clientLog(fd, ERR_USRN_MEM));
 	
 	if (sign == '+')
 	{

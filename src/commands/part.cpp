@@ -5,7 +5,7 @@ void	Server::part(std::istringstream &content, int fd)
 	std::string	chName;
 
 	content >> chName;
-	if (chName.empty() || content.gcount() > 0)
+	if (chName.empty() || !checkEmpty(content))
 		return (clientLog(fd, ERR_PART));
 
 	if (this->_channels.find(chName) == this->_channels.end())

@@ -8,13 +8,13 @@ class	Client;
 class Channel
 {
 	private :
-		bool				_inviteOnly;
-		bool				_topicRights;
-		int					_userLimit;
-		std::string			_color;
-		std::string			_name;
-		std::string			_topic;
-		std::string			_password;
+		bool					_inviteOnly;
+		bool					_topicRights;
+		int						_userLimit;
+		std::string				_color;
+		std::string				_name;
+		std::string				_topic;
+		std::string				_password;
 		std::map<int, Client *>	_operators;
 		std::map<int, Client *>	_members;
 		std::map<int, Client *>	_invited;

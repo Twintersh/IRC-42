@@ -13,7 +13,9 @@ SRC =	src/main.cpp	\
 		src/commands/invite.cpp	\
 		src/commands/kick.cpp	\
 		src/commands/topic.cpp	\
-		src/commands/mode.cpp
+		src/commands/mode.cpp \
+		src/commands/nick.cpp	\
+		src/commands/help.cpp
 HEADER =	inc/IRC.hpp \
 			inc/Client.hpp \
 			inc/Server.hpp	\
@@ -28,9 +30,9 @@ YELLOW=\033[0;33m
 RED=\033[0;31m
 END=\033[0m
 
-all : $(NAME) _capy
+all : $(NAME)
 
-%.o : %.cpp $(HEADER) 
+%.o : %.cpp $(HEADER)
 	$(CC) $(CFLAGS) $(INC) -c $< -o $@
 
 $(NAME) : $(OBJ)
@@ -42,7 +44,7 @@ clean :
 	rm -rf $(OBJ)
 
 run : all _capy
-	./$(NAME) 2000 oui
+	valgrind ./$(NAME) 2000 oui
 
 fclean : clean
 	@rm -rf $(NAME)
@@ -81,3 +83,6 @@ _capy :
 	@echo ""
 	@echo	"----------$(RED)I$(GREEN)nsane$(RED)R$(GREEN)adioactive$(RED)C$(GREEN)apybara SERVER READY----------$(END)"
 	@echo ""
+
+
+

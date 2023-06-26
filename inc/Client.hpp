@@ -13,6 +13,10 @@ class Client
 		std::string			_curCmd;
 		std::string			_color;
 		std::string			_user;
+		std::string			_hostName;
+		std::string			_serverName;
+		std::string			_realName;
+
 		void				setColor(void);
 
 	public :
@@ -27,6 +31,9 @@ class Client
 		void				setFd(int fd);
 		void				setNick(std::string nick);
 		void				setUser(std::string user);
+		void				setServerName(std::string serverName);
+		void				setHostName(std::string hostName);
+		void				setRealName(std::string realName);
 		void				joinCmd(std::string &join);
 		void				clearCmd(void);
 

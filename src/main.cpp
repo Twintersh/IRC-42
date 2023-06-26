@@ -7,6 +7,7 @@ int	main(int argc, char **argv)
 		std::cout << "Usage : <port> <password>" << std::endl;
 		return 0;
 	}
+	// std::cout << CAPY << std::endl;
 	Server	server(atoi(argv[1]), argv[2]);
 	try
 	{

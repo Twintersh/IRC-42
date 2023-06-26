@@ -8,7 +8,7 @@ void	Server::invite(std::istringstream &content, int fd)
 	int			clientFd;
 
 	content >> username >> channelName;
-	if (username.empty() || channelName.empty() || content.gcount() > 0)
+	if (username.empty() || channelName.empty() || !checkEmpty(content))
 		return (clientLog(fd, ERR_INVITE));
 	channelIt = this->_channels.find(channelName);
 	clientFd = findFdByClientNick(username);
