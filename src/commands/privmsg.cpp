@@ -32,6 +32,7 @@ void Server::privmsg(std::istringstream &content, int fd)
 		if (destFd == -1 || this->_clients[destFd]->getStatus() != registered)
 			return (clientLog(fd, ERR_USR_NOT_FND));
 		msg += this->_clients[fd]->getCNick() + "]:" + txt + "\n🦛> ";
+		this->_clients[destFd]->clearCmd();
 		send(destFd, msg.c_str(), msg.length(), 0);
 		log(*this->_clients[fd], LOG_MSG_CLIENT + this->_clients[fd]->getNick());
 	}

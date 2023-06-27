@@ -64,7 +64,10 @@ void Channel::sendChannel(std::string &msg, int fd)
 	for (vIt_Client it = _members.begin() ; it != _members.end() ; it++) 
 	{
 		if (it->first != fd)
+		{
+			it->second->clearCmd();
 			send(it->first, msg.c_str(), msg.length(), 0);
+		}
 	}
 }
 

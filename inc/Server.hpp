@@ -54,7 +54,6 @@ class Server
 		bool			addPoll(int fd);
 
 		Server(void);
-
 	public:
 		void			startServer(void);
 
