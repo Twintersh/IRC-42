@@ -38,6 +38,16 @@ void	Channel::removeOp(int fd)
 	this->_operators.erase(fd);
 }
 
+void	Channel::removeUser(int fd)
+{
+	if (this->_members.find(fd) != this->_members.end())
+		this->_members.erase(fd);
+	if (this->_operators.find(fd) != this->_operators.end())
+		this->_operators.erase(fd);
+	if (this->_invited.find(fd) != this->_invited.end())
+		this->_invited.erase(fd);
+}
+
 bool		Channel::isMember(int fd)
 {
 	if (this->_members.find(fd) == this->_members.end())

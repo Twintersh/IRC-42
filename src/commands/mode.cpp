@@ -1,6 +1,6 @@
 #include "IRC.hpp"
 
-static bool isNumber(std::string str)
+bool isNumber(const char *str)
 {
 	for (int i = 0 ; str[i] ; i++)
 		if (!isdigit(str[i]))
@@ -110,7 +110,7 @@ void	Server::mode(std::istringstream &content, int fd)
 			case('l'):
 				if (sign != '-')
 					content >> arg;
-				if (isNumber(arg) || sign == '-')
+				if (isNumber(arg.c_str()) || sign == '-')
 					limitUserChannel(chName, std::atoi(arg.c_str()), fd, sign);
 				else
 					clientLog(fd, ERR_MODE_LIMIT);

@@ -6,7 +6,7 @@ void	printTopic(int fd, std::string topic)
 
 	msg = "Channel's Topic :";
 	msg += topic;
-	msg += '\n';
+	msg += "\r\n";
 	send(fd, msg.c_str(), msg.size(), 0);
 }
 

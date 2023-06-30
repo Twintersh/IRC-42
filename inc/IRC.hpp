@@ -20,6 +20,8 @@ class Server;
 typedef std::map<int, Client *>::iterator vIt_Client;
 typedef std::map<std::string, Channel *>::iterator vIt_Channel;
 
+bool isNumber(const char *str);
+
 enum status{
 	pendingPassword,
 	pendingNickname,
@@ -72,6 +74,7 @@ enum status{
 #define ERR_MSG_LENGTH	"Your message should not exceed 500 characters"
 #define ERR_USR_NOT_FND "User not found"
 #define ERR_MODE_LIMIT	"Limit argument is not a number"
+#define ERR_ALONE		"You cannot send message to yourself"
 
 //-------------------- Client Log Messages -----------------
 #define CLOG_PASS		"Password accepted"
@@ -147,7 +150,7 @@ enum status{
 	              ⠋⠁⢰⣿⡽⢛⡧⢠⡇   ⠉⠉⠙⠓⠒⠒⠚⠉⠁ ⠉⠑⠒⠒⠉⠉⠁     \n \
 	               ⠘⠛⠒⣿⣤⠞                          \n \
 	\e[6;3;4;31m WELCOME TO OUR INSANE RADIOACTIVE CAPYBARA SERVER \e[0m \n \
-	     \e[1mUSE COMMAND `HELP` TO GET COMMAND LIST\e[0m\n🦛> "
+	     \e[1mUSE COMMAND `HELP` TO GET COMMAND LIST\e[0m\r\n"
 
 //--------------------Defines-----------------
 

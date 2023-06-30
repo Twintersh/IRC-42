@@ -1,5 +1,5 @@
 CC = c++ 
-NAME = IRC
+NAME = ircserv
 SRC =	src/main.cpp	\
 		src/Channel.cpp	\
 		src/Client.cpp \
@@ -44,7 +44,7 @@ clean :
 	rm -rf $(OBJ)
 
 run : all _capy
-	valgrind ./$(NAME) 2000 oui
+	valgrind ./$(NAME) $(ARG) oui
 
 fclean : clean
 	@rm -rf $(NAME)

@@ -7,10 +7,14 @@ int	main(int argc, char **argv)
 		std::cout << "Usage : <port> <password>" << std::endl;
 		return 0;
 	}
-	// std::cout << CAPY << std::endl;
-	Server	server(atoi(argv[1]), argv[2]);
+	if (!isNumber(argv[1]))
+	{
+		std::cout << "Usage: Port must be a number" << std::endl;
+		return 1;
+	}
 	try
 	{
+		Server	server(atoi(argv[1]), argv[2]);
 		server.startServer();
 	}
 	catch (std::exception &e)

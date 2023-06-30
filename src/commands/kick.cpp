@@ -10,7 +10,7 @@ static void	kickMessage(std::istringstream &content, const Client &op, int leave
 	msg += chName;
 	msg += " by ";
 	msg += op.getNick();
-	msg += '\n';
+	msg += "\r\n";
 	if (reason.empty())
 	{
 		send(leaverFd, msg.c_str(), msg.size(), 0);
@@ -18,7 +18,7 @@ static void	kickMessage(std::istringstream &content, const Client &op, int leave
 	}
 	msg += ". Reason :";
 	msg += reason;
-	msg += '\n';
+	msg += "\r\n";
 	send(leaverFd, msg.c_str(), msg.size(), 0);
 }
 

@@ -21,7 +21,7 @@ void	Server::clientLog(int fd, std::string str)
 
 		msg = "[Server] ";
 		msg += str;
-		msg += "\n";
+		msg += "\r\n";
 		send(fd, msg.c_str(), msg.size(), 0);
 	}
 }
@@ -76,10 +76,13 @@ void	Server::parseRequest(struct epoll_event &curEv)
 		clientLog(curEv.data.fd, ERR_MSG_LENGTH);
 	else if (str.find('\n') != std::string::npos)
 	{
-		std::istringstream strm(str);
+		while (str.find('\n') != std::string::npos)
+		{
+			std::istringstream strm(str.substr(0, str.find('\n') + 1));
+			str.erase(0, str.find('\n') + 1);
+			parseMsg(curEv.data.fd, strm);
+		}
 		this->_clients[cFd]->clearCmd();
-		parseMsg(curEv.data.fd, strm);
-		send(curEv.data.fd, "🦛> ", 7, 0);
 	}
 	memset(&buf, 0, sizeof(buf));
 }
@@ -89,6 +92,8 @@ void Server::killClient(struct epoll_event &curEv)
 	close(curEv.data.fd);
 	epoll_ctl(this->_epfd, EPOLL_CTL_DEL, curEv.data.fd, &curEv);
 	log(curEv.data.fd, LOG_CLOSED);
+	for(vIt_Channel it = this->_channels.begin(); it != this->_channels.end();it++)
+		it->second->removeUser(curEv.data.fd);
 	delete this->_clients[curEv.data.fd];
 	this->_clients.erase(curEv.data.fd);
 }
@@ -133,7 +138,8 @@ void	Server::startServer( void )
 	struct epoll_event	eventList[MAX_EVENTS];
 
 	// waiting for request...
-	bind(this->_fd, (struct sockaddr *)&this->_addr, sizeof(this->_addr));
+	if (bind(this->_fd, (struct sockaddr *)&this->_addr, sizeof(this->_addr)) == -1)
+		throw std::range_error("Invalid port");
 	listen(this->_fd, 5);
 	
 	// add server socket for new connection and stdin for exit

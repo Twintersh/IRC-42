@@ -21,6 +21,7 @@ class Channel
 
 		void	setColor(void);
 		Channel( void );
+
 	public :
 		bool		getInviteMode(void) const;
 		bool		getTopicRights(void) const;
@@ -41,6 +42,7 @@ class Channel
 		bool		isMember(int fd);
 		bool		isInvited(int fd);
 
+		void		removeUser(int fd);
 		void		inviteClient(Client *newClient);
 		void		joinChannel(Client *newClient);
 		void		leaveChannel(int fd);
