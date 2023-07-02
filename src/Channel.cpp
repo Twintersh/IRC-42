@@ -91,7 +91,7 @@ bool		Channel::getTopicRights(void) const {return this->_topicRights;}
 
 int			Channel::getUserLimit(void) const {return this->_userLimit;}
 
-int			Channel::getConnectedUser(void) const {return this->_members.size() + this->_operators.size();}
+int			Channel::getConnectedUser(void) const {return this->_members.size();}
 
 std::string	Channel::getName(void) const {return this->_name;}
 

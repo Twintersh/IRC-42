@@ -36,9 +36,9 @@ void	Server::join(std::istringstream &content, int fd)
 				return (clientLog(fd, ERR_WRNG_PASS));
 		}
 		if (this->_channels[chName]->getUserLimit() > 0
-		&& this->_channels[chName]->getConnectedUser() >= (this->_channels[chName]->getUserLimit()))
+		&& this->_channels[chName]->getConnectedUser() >= this->_channels[chName]->getUserLimit())
 			return (clientLog(fd, ERR_CH_FULL));
-			
+
 		this->_channels[chName]->joinChannel(this->_clients[fd]);
 		clientLog(fd, CLOG_JOIN_CH);
 		log(*this->_clients[fd], LOG_JOIN + this->_channels[chName]->getName());

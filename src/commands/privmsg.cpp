@@ -4,10 +4,10 @@ void Server::privmsg(std::istringstream &content, int fd)
 {
 	std::string dest;
 	std::string txt;
-	std::string msg = "\nfrom [";
+	std::string msg = "💬 from [";
 
 	content >> dest;
-	getline(content, txt, '\0');
+	getline(content, txt, '\n');
 	if (dest.empty() || txt.empty())
 		return (clientLog(fd, ERR_PRIVMSG));
 	if (dest[0] == '#' || dest[0] == '&')
@@ -17,9 +17,9 @@ void Server::privmsg(std::istringstream &content, int fd)
 			return (clientLog(fd, ERR_UNKWN_CH));
 		if (channel->second->isMember(fd))
 		{
-			msg += this->_clients[fd]->getCNick() + "] in <" + channel->second->getCName() + ">:" + txt + "\n🦛> ";
+			msg += this->_clients[fd]->getCNick() + "] in <" + channel->second->getCName() + ">:" + txt + "\r\n";
 			channel->second->sendChannel(msg, fd);
-			log(*this->_clients[fd], LOG_MSG_CHANNEL + channel->second->getCName());
+			log(*this->_clients[fd], LOG_MSG_CHANNEL + channel->second->getName());
 		}
 		else
 			return (clientLog(fd, ERR_NOT_MEMBER));
@@ -36,4 +36,5 @@ void Server::privmsg(std::istringstream &content, int fd)
 		send(destFd, msg.c_str(), msg.length(), 0);
 		log(*this->_clients[fd], LOG_MSG_CLIENT + this->_clients[fd]->getNick());
 	}
+	clientLog(fd, CLOG_SENT);
 }	

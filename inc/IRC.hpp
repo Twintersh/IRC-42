@@ -73,7 +73,7 @@ enum status{
 #define ERR_UNKWN_CH	"Could not find channel "
 #define ERR_MSG_LENGTH	"Your message should not exceed 500 characters"
 #define ERR_USR_NOT_FND "User not found"
-#define ERR_MODE_LIMIT	"Limit argument is not a number"
+#define ERR_MODE_LIMIT	"Limit argument is not a valid number"
 #define ERR_ALONE		"You cannot send message to yourself"
 
 //-------------------- Client Log Messages -----------------
@@ -91,6 +91,9 @@ enum status{
 #define CLOG_LIMIT		"limit changed successfully"
 #define CLOG_PASS_REM	"Removed password from channel "
 #define CLOG_PASS_CHG	"Changed password from channel "
+#define CLOG_SENT		"Message sent"
+#define CLOG_CH_IN		"invitation mode changed"
+#define CLOG_CH_TOP		"topic rights changed"
 
 // ------------------ Server log Messages -------------------
 #define LOG_LOGIN		"password entered successfully"

@@ -5,7 +5,7 @@ static void	kickMessage(std::istringstream &content, const Client &op, int leave
 	std::string	msg;
 	std::string	reason;
 
-	getline(content, reason, '\0');
+	getline(content, reason, '\n');
 	msg = "You have been kicked from channel ";
 	msg += chName;
 	msg += " by ";

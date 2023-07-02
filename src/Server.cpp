@@ -19,7 +19,7 @@ void	Server::clientLog(int fd, std::string str)
 	{
 		std::string	msg;
 
-		msg = "[Server] ";
+		msg = "[SERVER]: ";
 		msg += str;
 		msg += "\r\n";
 		send(fd, msg.c_str(), msg.size(), 0);

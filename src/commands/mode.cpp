@@ -93,10 +93,12 @@ void	Server::mode(std::istringstream &content, int fd)
 		switch (mode[i])
 		{
 			case('i'):
-				this->_channels[chName]->setInviteMode(sign == '+');
+				this->_channels[chName]->setInviteMode(sign == '+'); // send true if sign is equal to '+'
+				return (clientLog(fd, CLOG_CH_IN));
 				break;
 			case('t'):
 				this->_channels[chName]->setTopicRightsMode(sign == '+');
+				return (clientLog(fd, CLOG_CH_TOP));
 				break;
 			case('k'):
 				if (sign == '+')
@@ -113,10 +115,10 @@ void	Server::mode(std::istringstream &content, int fd)
 				if (isNumber(arg.c_str()) || sign == '-')
 					limitUserChannel(chName, std::atoi(arg.c_str()), fd, sign);
 				else
-					clientLog(fd, ERR_MODE_LIMIT);
+					return (clientLog(fd, ERR_MODE_LIMIT));
 				break;
 			default:
-				clientLog(fd, ERR_MODE);
+				return (clientLog(fd, ERR_MODE));
 				break;
 		}
 	}

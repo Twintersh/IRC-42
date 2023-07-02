@@ -44,7 +44,7 @@ clean :
 	rm -rf $(OBJ)
 
 run : all _capy
-	valgrind ./$(NAME) $(ARG) oui
+	valgrind ./$(NAME) 2000 oui
 
 fclean : clean
 	@rm -rf $(NAME)
